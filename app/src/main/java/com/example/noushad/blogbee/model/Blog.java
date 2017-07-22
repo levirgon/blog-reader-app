@@ -19,7 +19,7 @@ public class Blog {
     private String mBlogTitle;
     private String mDescription;
     private List<Comments> mComments;
-
+    private boolean isFavourite = false;
 
 
     public Blog(Bitmap coverImage, Bitmap profileImage, String bloggerName, String blogTitle, String commentsCount, String lastUpdateTime, String description, List<Comments> comments) {
