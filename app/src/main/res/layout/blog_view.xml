@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:toolbarId="@+id/toolbar">
+
+            <ImageView
+                android:id="@+id/app_bar_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/house"
+                app:layout_collapseMode="parallax"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/Base.DialogWindowTitleBackground.AppCompat">
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/nestedScrollView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/name_text_full"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="32dp"
+                        android:maxLength="26"
+                        android:text="Bloggers Name"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText"/>
+
+                    <TextView
+                        android:id="@+id/template"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:text="@string/last_updated_full"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/name_text_full"/>
+
+                    <TextView
+                        android:id="@+id/last_update_full"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:text="@string/_5_minutes_ago"
+                        android:textStyle="bold"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/template"/>
+
+                    <TextView
+                        android:id="@+id/blog_title_full"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:text="Blog Title"
+                        android:textStyle="bold|italic"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/last_update_full"
+                        tools:ignore="HardcodedText"/>
+
+                    <TextView
+                        android:id="@+id/blog_description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="15dp"
+                        android:maxLines="100"
+                        android:padding="8dp"
+                        android:scrollIndicators="right"
+                        android:text="Papiya asked me to leave before she become weak to leave me. She told me to go somewhere, where she will never be able to come, or find me again. None of us cried. We knew that was the last time we were seeing each other. I moved from my neighbour's village silently. I walked very slowly to remember everything of my life. I and Papiya used to go to school together. The field I was passing was the place where one day I fainted after seeing a snake. Papiya was always brave, she took that snake in a stick and throw into the water. I laughed a lot by thinking about all those stupid things. Both of us are very poor. Many days, our families are unable to eat anything other than rice. During flood we starved countless days. And then Papiya was chosen by a rich family, she will be able to take care her siblings and sick mother after her marriage. I wanted to be selfish, I wanted to tell her to come with me and fly somewhere. But then I could not. I wanted to see her happy even at the cost of leaving me. When I explained her how much I wanted her happiness, she did not respond. She only asked me, ‘is that the suffering of food is greater than suffering of love?’ I was silent and when I saw tears in her eyes, for the first and last time, I lovingly touched her cheeks. It’s been six months, I am in the city, riding rickshaw and sleeping here and there. Papiya is married and gone far. In this life, I will never be able to love someone as like I loved her. When we were giving SSC exam she gave me an amulet so I never feel fear. This is the only thing I tied in my hand and carry all the time. We promised that we will never meet each other again, we will never talk. Half of th"
+                        android:textAlignment="viewStart"
+                        android:textIsSelectable="true"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="@+id/blog_title_full"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/blog_title_full"
+                        tools:ignore="HardcodedText,UnusedAttribute"/>
+
+                    <TextView
+                        android:id="@+id/total_comments_full"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center"
+                        android:text="15
+            "
+                        app:layout_constraintLeft_toRightOf="@+id/textView6"
+                        app:layout_constraintTop_toBottomOf="@+id/comment_box"
+                        tools:ignore="HardcodedText"/>
+
+                    <EditText
+                        android:id="@+id/comment_box"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="32dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/cardview_shadow_start_color"
+                        android:textSize="14sp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/comment_button"
+                        app:layout_constraintTop_toBottomOf="@+id/blog_description"
+                        tools:text="Your Comment Here ..."/>
+
+                    <Button
+                        android:id="@+id/comment_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/ic_comment_white_24dp"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:fontFamily="cursive"
+                        android:minWidth="48dp"
+                        android:textColor="@color/cardview_light_background"
+                        app:layout_constraintBottom_toBottomOf="@+id/comment_box"
+                        app:layout_constraintRight_toRightOf="@+id/blog_description"
+                        app:layout_constraintTop_toTopOf="@+id/comment_box"
+                        tools:ignore="HardcodedText"/>
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="32dp"
+                        android:text="Total Comments : "
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/comment_box"
+                        tools:ignore="HardcodedText"/>
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="Comments"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText"/>
+
+                    <ListView
+                        android:id="@+id/comments_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_bookmark_white_24dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/nestedScrollView"
+        app:layout_anchorGravity="top|right"/>
+
+</android.support.design.widget.CoordinatorLayout>
