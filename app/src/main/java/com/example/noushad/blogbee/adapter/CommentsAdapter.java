@@ -1,4 +1,4 @@
-package com.example.noushad.blogbee.controller;
+package com.example.noushad.blogbee.adapter;
 
 
 import android.support.annotation.NonNull;

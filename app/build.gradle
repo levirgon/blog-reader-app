@@ -33,5 +33,9 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     testCompile 'junit:junit:4.12'
+    compile 'javax.annotation:javax.annotation-api:1.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 }

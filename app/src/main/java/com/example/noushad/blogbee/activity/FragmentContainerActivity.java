@@ -1,4 +1,4 @@
-package com.example.noushad.blogbee.view;
+package com.example.noushad.blogbee.activity;
 
 
 import android.content.Intent;
@@ -17,11 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.noushad.blogbee.R;
+import com.example.noushad.blogbee.fragment.BlogCreationFragment;
+import com.example.noushad.blogbee.fragment.BlogViewFragment;
+import com.example.noushad.blogbee.fragment.ListFragment;
 
 
-public class BlogsFeedActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface {
+public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface {
 
-    private static final String TAG = "BlogsFeedActivity";
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout mDrawerLayout;
     public static final int CREATE_NEW = 1;
@@ -29,13 +31,17 @@ public class BlogsFeedActivity extends AppCompatActivity implements NavigationVi
     public static final String BLOG_CREATION_FRAGMENT = "blog_creation_fragment";
     public static final String BLOG_VIEW_FRAGMENT = "blog_view_fragment";
     public static final String LIST_FRAGMENT = "list_fragment";
+    public static final String RETRIEVE_FRAGMENT = "retrieve fragment";
+    public  String CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blogs_feed);
+        setContentView(R.layout.activity_fragment_container);
         setNavigationViewListner();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
@@ -49,12 +55,27 @@ public class BlogsFeedActivity extends AppCompatActivity implements NavigationVi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        Fragment savedFragment = getSupportFragmentManager().findFragmentByTag(LIST_FRAGMENT);
+        Fragment savedFragment = getSupportFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG);
 
         if (savedFragment == null)
-            callFragment(new ListFragment(), LIST_FRAGMENT, CREATE_NEW);
+            startFragment(new ListFragment(), CREATE_NEW);
 
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void setNavigationViewListner() {
@@ -63,16 +84,17 @@ public class BlogsFeedActivity extends AppCompatActivity implements NavigationVi
 
     }
 
-    private void callFragment(Fragment fragment, String TAG, int command) {
+    private void startFragment(Fragment fragment, int command) {
 
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (command == CREATE_NEW)
-            fragmentTransaction.add(R.id.placeHolder, fragment, TAG);
+            fragmentTransaction.add(R.id.placeHolder, fragment, CURRENT_FRAGMENT_TAG);
         else {
-            fragmentTransaction.replace(R.id.placeHolder, fragment, TAG).addToBackStack(null);
+            fragmentTransaction.replace(R.id.placeHolder, fragment, CURRENT_FRAGMENT_TAG).addToBackStack(null);
         }
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
 
@@ -90,20 +112,22 @@ public class BlogsFeedActivity extends AppCompatActivity implements NavigationVi
         switch (item.getItemId()) {
 
             case R.id.home:
-                callFragment(new ListFragment(), LIST_FRAGMENT, REPLACE);
+                CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
+                startFragment(new ListFragment(), REPLACE);
                 break;
             case R.id.my_account:
                 //account mangement activity;
                 break;
             case R.id.write_blog:
-                callFragment(new BlogCreationFragment(), BLOG_CREATION_FRAGMENT, REPLACE);
+                CURRENT_FRAGMENT_TAG = BLOG_CREATION_FRAGMENT;
+                startFragment(new BlogCreationFragment(), REPLACE);
                 break;
             case R.id.my_posts:
             case R.id.favourites:
             case R.id.bookmarks:
             case R.id.settings:
             case R.id.action_logout:
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
 
@@ -118,8 +142,7 @@ public class BlogsFeedActivity extends AppCompatActivity implements NavigationVi
     public void onListBlogSelected(int index) {
 
         BlogViewFragment blogViewFragment = new BlogViewFragment();
-
-        callFragment(blogViewFragment, BLOG_VIEW_FRAGMENT, REPLACE);
+        startFragment(blogViewFragment, REPLACE);
 
     }
 }

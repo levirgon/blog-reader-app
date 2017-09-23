@@ -1,4 +1,4 @@
-package com.example.noushad.blogbee.view;
+package com.example.noushad.blogbee.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.noushad.blogbee.R;
-import com.example.noushad.blogbee.controller.CommentsAdapter;
+import com.example.noushad.blogbee.adapter.CommentsAdapter;
 import com.example.noushad.blogbee.model.Comments;
 
 import java.util.ArrayList;

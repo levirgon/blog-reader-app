@@ -1,17 +1,22 @@
-package com.example.noushad.blogbee.view;
+package com.example.noushad.blogbee.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
-import com.example.noushad.blogbee.model.Blogger;
+import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
+import com.example.noushad.blogbee.model.registerResponseModel.RegSuccessResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,12 +28,14 @@ public class RegisterActivity extends AppCompatActivity {
     private Button mRegisterButton;
 
     private static final String TAG = "RegisterActivity";
+    private ApiInterface mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        mService = ServiceGenerator.createService(ApiInterface.class);
         mNameEditText = (EditText) findViewById(R.id.account_name);
         mEmailEditText = (EditText) findViewById(R.id.account_email);
         mPhoneEditText = (EditText) findViewById(R.id.account_phone);
@@ -43,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (getInformation()) {
 
-                    Log.d(TAG, "onClick: returned true");
 
                     CountDownTimer countDownTimer = new CountDownTimer(1000, 1000) {
                         @Override
@@ -56,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             Toast.makeText(RegisterActivity.this, " Login using correct details ", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
 
                         }
@@ -97,36 +103,44 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
 
 
-            Blogger blogger = new Blogger(name, email, phone, password);
-
-            return addToDatabase(blogger);
-
+            return addToDatabase(name, email, password, phone, confirmPassword);
 
         }
 
         return false;
     }
 
-    private boolean addToDatabase(Blogger blogger) {
+    private boolean addToDatabase(String name, String email, String password, String phone, String confirmPassword) {
 
-        if (!bloggerAlreadyExists(blogger)) {
-            //add information to database
+        //
+        Call<RegSuccessResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
+
+        registerResponseCall.enqueue(new Callback<RegSuccessResponse>() {
+            @Override
+            public void onResponse(Call<RegSuccessResponse> call, Response<RegSuccessResponse> response) {
+
+                if (response.isSuccessful()) {
+                    RegSuccessResponse registerResponse = response.body();
+                    String email = (registerResponse.getData()).getEmail();
+                    Toast.makeText(RegisterActivity.this, email + " has been registered, \n please check email to verify account ", Toast.LENGTH_LONG).show();
+
+                }else{
+                    //RegErrorResponse regErrorResponse = response.body();
+
+                }
 
 
-            Toast.makeText(this, "User Added To Database", Toast.LENGTH_SHORT).show();
+            }
 
-            return true;
+            @Override
+            public void onFailure(Call<RegSuccessResponse> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, "something went wrong", Toast.LENGTH_LONG).show();
+            }
+        });
 
-        }
 
         return false;
     }
 
-    private boolean bloggerAlreadyExists(Blogger blogger) {
 
-        //check database for duplicate data.
-
-
-        return false;
-    }
 }
