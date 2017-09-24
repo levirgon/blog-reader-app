@@ -33,13 +33,6 @@ public class RegResponse {
     @Expose
     private Object deletedDate;
 
-    //Error RegErrorResponse
-    @SerializedName("error")
-    @Expose
-    private Error error;
-    @SerializedName("code")
-    @Expose
-    private int code;
 
     /**
      * No args constructor for use in serialization
@@ -59,7 +52,7 @@ public class RegResponse {
      * @param lastChange
      */
     public RegResponse(int id, String name, String email, int isVerified, boolean isAdmin, String coverPhoto,
-                       String creationDate, String lastChange, Object deletedDate,Error error,int code) {
+                       String creationDate, String lastChange, Object deletedDate) {
         super();
         this.id = id;
         this.name = name;
@@ -71,9 +64,6 @@ public class RegResponse {
         this.lastChange = lastChange;
         this.deletedDate = deletedDate;
 
-        //Error RegErrorResponse
-        this.error = error;
-        this.code = code;
     }
 
     public int getId() {
@@ -148,23 +138,7 @@ public class RegResponse {
         this.deletedDate = deletedDate;
     }
 
-    //Error RegErrorResponse
 
-    public Error getError() {
-        return error;
-    }
-
-    public void setError(Error error) {
-        this.error = error;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 
 
 }

@@ -12,7 +12,10 @@ import android.widget.Toast;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
+import com.example.noushad.blogbee.model.loginResponseModel.LogInError;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 //check for valid email and password
                 if (mEmail.isEmpty() || mPassword.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Please Enter a valid Email and Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Please Fill up All Required fields", Toast.LENGTH_SHORT).show();
                 } else {
 
 //                    Intent intent = new Intent(LoginActivity.this, FragmentContainerActivity.class);
@@ -77,22 +80,51 @@ public class LoginActivity extends AppCompatActivity {
         responseCall.enqueue(new Callback<LogInSuccessResponse>() {
             @Override
             public void onResponse(Call<LogInSuccessResponse> call, Response<LogInSuccessResponse> response) {
-                if (response.isSuccessful()) {
-                    LogInSuccessResponse logInSuccessResponse = response.body();
-                    Toast.makeText(LoginActivity.this, logInSuccessResponse.getTokenType().toString(), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LoginActivity.this, FragmentContainerActivity.class);
-                    startActivity(intent);
-                }else{
+                if (response.isSuccessful() && !containsError(response)) {
+                    try {
+                        LogInSuccessResponse logInSuccessResponse = response.body();
+                        Toast.makeText(LoginActivity.this, logInSuccessResponse.toString(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(LoginActivity.this, FragmentContainerActivity.class);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+
+                    //i have been trying to make it a generic method but the from json method has been creating problems when i pass a generic class to it
+                    Gson gson = new GsonBuilder().create();
+                    LogInError pojo;
+                    try {
+                        pojo = gson.fromJson(response.errorBody().string(), LogInError.class);
+                        Toast.makeText(getApplicationContext(), pojo.getError(), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        //Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        LogInSuccessResponse logInSuccessResponse = response.body();
+                        if (logInSuccessResponse.getAccessToken() == null)
+                            Toast.makeText(getApplicationContext(), logInSuccessResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    }
 
                 }
             }
 
             @Override
             public void onFailure(Call<LogInSuccessResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
 
     }
+
+    private boolean containsError(Response<LogInSuccessResponse> response) {
+
+        LogInSuccessResponse logInSuccessResponse = response.body();
+        if (logInSuccessResponse.getAccessToken() == null) {
+            Toast.makeText(getApplicationContext(), logInSuccessResponse.getError(), Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return false;
+    }
+
 
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
@@ -64,7 +65,7 @@ public class ListFragment extends Fragment {
     private void updateUI(List<DataItem> dataItems) {
         mDataItems = new ArrayList<>(dataItems);
         if (mAdapter == null) {
-            mAdapter = new MyRecycleAdapter(getActivity(),mListener, mDataItems);
+            mAdapter = new MyRecycleAdapter(getActivity(), mListener, mDataItems);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
@@ -83,7 +84,7 @@ public class ListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AllpostsResponse> call, Throwable t) {
-
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

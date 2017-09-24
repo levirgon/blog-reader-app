@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
-import com.example.noushad.blogbee.model.registerResponseModel.Error;
+import com.example.noushad.blogbee.model.registerResponseModel.RegError;
 import com.example.noushad.blogbee.model.registerResponseModel.RegResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -130,11 +130,14 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else {
+
+                    //i have been trying to make it a generic method but the from json method has been creating problems when i pass a generic class to it
+
                     Gson gson = new GsonBuilder().create();
-                    Error pojo;
+                    RegError pojo;
                     try {
                         JSONObject errorObj = new JSONObject(response.errorBody().string());
-                        pojo = gson.fromJson(errorObj.getJSONObject("error").toString(), Error.class);
+                        pojo = gson.fromJson(errorObj.getJSONObject("error").toString(), RegError.class);
                         Toast.makeText(getApplicationContext(), pojo.toString(), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();

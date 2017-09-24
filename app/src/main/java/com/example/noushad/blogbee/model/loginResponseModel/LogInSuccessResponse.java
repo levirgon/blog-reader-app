@@ -19,6 +19,12 @@ public class LogInSuccessResponse{
 	@SerializedName("expires_in")
 	private int expiresIn;
 
+	@SerializedName("error")
+	private String error;
+
+	@SerializedName("message")
+	private String message;
+
 	public void setAccessToken(String accessToken){
 		this.accessToken = accessToken;
 	}
@@ -49,6 +55,15 @@ public class LogInSuccessResponse{
 
 	public int getExpiresIn(){
 		return expiresIn;
+	}
+
+
+	public String getError() {
+		return error;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 
 	@Override
