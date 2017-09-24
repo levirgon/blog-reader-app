@@ -12,7 +12,12 @@ import android.widget.Toast;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
-import com.example.noushad.blogbee.model.registerResponseModel.RegSuccessResponse;
+import com.example.noushad.blogbee.model.registerResponseModel.Error;
+import com.example.noushad.blogbee.model.registerResponseModel.RegResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,15 +73,12 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }.start();
 
-
                 }
 
             }
         });
 
-
     }
-
     private boolean getInformation() {
 
         String name = "";
@@ -113,28 +115,39 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean addToDatabase(String name, String email, String password, String phone, String confirmPassword) {
 
         //
-        Call<RegSuccessResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
+        Call<RegResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
 
-        registerResponseCall.enqueue(new Callback<RegSuccessResponse>() {
+        registerResponseCall.enqueue(new Callback<RegResponse>() {
             @Override
-            public void onResponse(Call<RegSuccessResponse> call, Response<RegSuccessResponse> response) {
+            public void onResponse(Call<RegResponse> call, Response<RegResponse> response) {
 
+                RegResponse registerResponse = response.body();
                 if (response.isSuccessful()) {
-                    RegSuccessResponse registerResponse = response.body();
-                    String email = (registerResponse.getData()).getEmail();
-                    Toast.makeText(RegisterActivity.this, email + " has been registered, \n please check email to verify account ", Toast.LENGTH_LONG).show();
 
-                }else{
-                    //RegErrorResponse regErrorResponse = response.body();
+                    String email = registerResponse.getEmail();
+                    Toast.makeText(RegisterActivity.this, email + " has been registered, \n please check email to verify account ", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    Gson gson = new GsonBuilder().create();
+                    Error pojo;
+                    try {
+                        JSONObject errorObj = new JSONObject(response.errorBody().string());
+                        pojo = gson.fromJson(errorObj.getJSONObject("error").toString(), Error.class);
+                        Toast.makeText(getApplicationContext(), pojo.toString(), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
 
                 }
-
 
             }
 
             @Override
-            public void onFailure(Call<RegSuccessResponse> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "something went wrong", Toast.LENGTH_LONG).show();
+            public void onFailure(Call<RegResponse> call, Throwable t) {
+
+                Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

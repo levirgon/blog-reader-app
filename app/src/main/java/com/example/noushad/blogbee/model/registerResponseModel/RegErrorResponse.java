@@ -21,5 +21,12 @@ public class RegErrorResponse {
 		return error;
 	}
 
-
+	@Override
+ 	public String toString(){
+		return 
+			"RegErrorResponse{" +
+			"code = '" + code + '\'' + 
+			",error = '" + error + '\'' + 
+			"}";
+		}
 }

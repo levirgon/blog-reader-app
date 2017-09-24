@@ -78,11 +78,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LogInSuccessResponse> call, Response<LogInSuccessResponse> response) {
                 if (response.isSuccessful()) {
-
                     LogInSuccessResponse logInSuccessResponse = response.body();
                     Toast.makeText(LoginActivity.this, logInSuccessResponse.getTokenType().toString(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this, FragmentContainerActivity.class);
                     startActivity(intent);
+                }else{
+
                 }
             }
 

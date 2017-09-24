@@ -2,7 +2,7 @@ package com.example.noushad.blogbee.Interface;
 
 import com.example.noushad.blogbee.model.allPostsResponseModel.AllpostsResponse;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
-import com.example.noushad.blogbee.model.registerResponseModel.RegSuccessResponse;
+import com.example.noushad.blogbee.model.registerResponseModel.RegResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -18,7 +18,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("registration")
-    Call<RegSuccessResponse> createUser(
+    Call<RegResponse> createUser(
             @Field("name") String name,
             @Field("email") String email,
             @Field("password") String password,
