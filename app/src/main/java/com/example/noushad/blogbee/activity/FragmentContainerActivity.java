@@ -21,6 +21,7 @@ import com.example.noushad.blogbee.fragment.BlogCreationFragment;
 import com.example.noushad.blogbee.fragment.BlogViewFragment;
 import com.example.noushad.blogbee.fragment.ListFragment;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
+import com.example.noushad.blogbee.utils.SharedPrefManager;
 
 
 public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface,PaginationAdapterCallback {
@@ -127,8 +128,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
             case R.id.bookmarks:
             case R.id.settings:
             case R.id.action_logout:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                logout();
                 break;
 
 
@@ -136,6 +136,12 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        SharedPrefManager.getInstance(this).logout();
+        finish();
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
