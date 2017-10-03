@@ -45,6 +45,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+            finish();
+            startActivity(new Intent(this, FragmentContainerActivity.class));
+        }
         progressDialog = new ProgressDialog(this);
         mService = ServiceGenerator.createService(ApiInterface.class);
         mEmailEditText = (EditText) findViewById(R.id.email_entry);
