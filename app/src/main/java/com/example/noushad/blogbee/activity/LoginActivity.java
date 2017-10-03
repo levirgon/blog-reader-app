@@ -1,5 +1,6 @@
 package com.example.noushad.blogbee.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +13,18 @@ import android.widget.Toast;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
+import com.example.noushad.blogbee.model.CreatorInfo;
+import com.example.noushad.blogbee.model.SimpleError;
+import com.example.noushad.blogbee.model.ValidationError.ValidationError;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInError;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
+import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,11 +39,13 @@ public class LoginActivity extends AppCompatActivity {
     private String mEmail;
     private String mPassword;
     private ApiInterface mService;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        progressDialog = new ProgressDialog(this);
         mService = ServiceGenerator.createService(ApiInterface.class);
         mEmailEditText = (EditText) findViewById(R.id.email_entry);
         mPasswordEditText = (EditText) findViewById(R.id.password_entry);
@@ -75,33 +86,43 @@ public class LoginActivity extends AppCompatActivity {
 
     private void userLogin(String email, String password) {
 
+        progressDialog.setMessage("Signing Up...");
+        progressDialog.show();
         Call<LogInSuccessResponse> responseCall = mService.userLogin(email, password);
 
         responseCall.enqueue(new Callback<LogInSuccessResponse>() {
             @Override
             public void onResponse(Call<LogInSuccessResponse> call, Response<LogInSuccessResponse> response) {
-                if (response.isSuccessful() && !containsError(response)) {
-                    try {
-                        LogInSuccessResponse logInSuccessResponse = response.body();
-                        Toast.makeText(LoginActivity.this, logInSuccessResponse.toString(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, FragmentContainerActivity.class);
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                } else {
 
-                    //i have been trying to make it a generic method but the from json method has been creating problems when i pass a generic class to it
-                    Gson gson = new GsonBuilder().create();
-                    LogInError pojo;
+                progressDialog.dismiss();
+                if(response.isSuccessful()){
+
+                    LogInSuccessResponse aInformation = response.body();
+                    SharedPrefManager.getInstance(getApplicationContext()).userLoginDataUpdate(aInformation);
+                    setLoggedInUserInformation();
+
+                    // startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                }else if (response.code()==422){
+                    JsonParser parser = new JsonParser();
+                    JsonElement mJson = null;
                     try {
-                        pojo = gson.fromJson(response.errorBody().string(), LogInError.class);
-                        Toast.makeText(getApplicationContext(), pojo.getError(), Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        //Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        LogInSuccessResponse logInSuccessResponse = response.body();
-                        if (logInSuccessResponse.getAccessToken() == null)
-                            Toast.makeText(getApplicationContext(), logInSuccessResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        mJson = parser.parse(response.errorBody().string());
+                        Gson gson = new Gson();
+                        ValidationError errorResponse = gson.fromJson(mJson, ValidationError.class);
+                        Toast.makeText(getApplicationContext(),errorResponse.toString(),Toast.LENGTH_SHORT).show();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }else{
+                    JsonParser parser = new JsonParser();
+                    JsonElement mJson = null;
+                    try {
+                        mJson = parser.parse(response.errorBody().string());
+                        Gson gson = new Gson();
+                        SimpleError simpleerrorRes = gson.fromJson(mJson, SimpleError.class);
+                        Toast.makeText(getApplicationContext(),simpleerrorRes.getError().toString(),Toast.LENGTH_SHORT).show();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
                     }
 
                 }
@@ -109,21 +130,54 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LogInSuccessResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-
             }
         });
 
     }
 
-    private boolean containsError(Response<LogInSuccessResponse> response) {
+    private void setLoggedInUserInformation() {
 
-        LogInSuccessResponse logInSuccessResponse = response.body();
-        if (logInSuccessResponse.getAccessToken() == null) {
-            Toast.makeText(getApplicationContext(), logInSuccessResponse.getError(), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return false;
+
+        progressDialog.setMessage("Get User Information...");
+        progressDialog.show();
+
+        //building retrofit object
+        Call<CreatorInfo> responseCall = mService.GetLoggedInUserData(SharedPrefManager.getInstance(this).getAuthToken());
+
+        responseCall.enqueue(new Callback<CreatorInfo>() {
+            @Override
+            public void onResponse(Call<CreatorInfo> call, Response<CreatorInfo> response) {
+                progressDialog.dismiss();
+                if(response.isSuccessful()){
+
+                    CreatorInfo others = response.body();
+                    SharedPrefManager.getInstance(getApplicationContext()).userOwnDataUpdate(others);
+                    Toast.makeText(getApplicationContext(),"login successfully",Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), FragmentContainerActivity.class));
+                }else{
+                    JsonParser parser = new JsonParser();
+                    JsonElement mJson = null;
+                    try {
+                        mJson = parser.parse(response.errorBody().string());
+                        Gson gson = new Gson();
+                        SimpleError simpleerrorRes = gson.fromJson(mJson, SimpleError.class);
+                        Toast.makeText(getApplicationContext(),simpleerrorRes.getError().toString(),Toast.LENGTH_SHORT).show();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreatorInfo> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 

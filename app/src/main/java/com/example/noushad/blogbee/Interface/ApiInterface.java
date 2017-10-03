@@ -1,5 +1,6 @@
 package com.example.noushad.blogbee.Interface;
 
+import com.example.noushad.blogbee.model.CreatorInfo;
 import com.example.noushad.blogbee.model.allPostsResponseModel.AllpostsResponse;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
 import com.example.noushad.blogbee.model.registerResponseModel.RegResponse;
@@ -9,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -42,6 +44,12 @@ public interface ApiInterface {
     @GET("posts/{index}")
     Call<SinglePostResponse> getSpecifiedPost(
             @Path("index") int index);
+
+
+
+    @GET("userinfo")
+    Call<CreatorInfo> GetLoggedInUserData(
+            @Header("Authorization") String authorization);
 
 
 }
