@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
         LogInSuccessResponse logInSuccessResponse = response.body();
         if (logInSuccessResponse.getAccessToken() == null) {
-            Toast.makeText(getApplicationContext(), logInSuccessResponse.getError(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), logInSuccessResponse.getError(), Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;

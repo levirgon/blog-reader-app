@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.noushad.blogbee.R;
-import com.example.noushad.blogbee.model.Comments;
+import com.example.noushad.blogbee.model.singlePostResponseModel.CommentsItem;
 
 import java.util.List;
 
@@ -21,12 +21,12 @@ import java.util.List;
  * Created by noushad on 7/19/17.
  */
 
-public class CommentsAdapter extends ArrayAdapter<Comments> {
+public class CommentsAdapter extends ArrayAdapter<CommentsItem> {
 
-    List<Comments> mCommentsList;
+    List<CommentsItem> mCommentsList;
 
-    public CommentsAdapter(AppCompatActivity activity, List<Comments> comments) {
-        super(activity, 0, comments);
+    public CommentsAdapter(AppCompatActivity activity, List<CommentsItem> comments) {
+        super(activity,0,comments);
         mCommentsList = comments;
 
     }
@@ -45,17 +45,17 @@ public class CommentsAdapter extends ArrayAdapter<Comments> {
                     R.layout.comment_item_layout, parent, false);
         }
 
-        final Comments currentComment = getItem(position);
+        final CommentsItem currentComment = getItem(position);
 
         TextView nameTV = (TextView) listItemView.findViewById(R.id.comment_profile_name);
-        nameTV.setText(currentComment.getCommentersName());
+        nameTV.setText(currentComment.getCreatorInfo().getName());
 
         TextView commentTv = (TextView) listItemView.findViewById(R.id.comment_tv);
-        commentTv.setText(currentComment.getComment());
+        commentTv.setText(currentComment.getDetails());
 
         ImageView commentImage = (ImageView) listItemView.findViewById(R.id.comment_profile_image);
         Glide.with(commentImage.getContext())
-                .load(R.drawable.profile_image)
+                .load(currentComment.getCreatorInfo().getCoverPhoto())
                 .fitCenter()
                 .into(commentImage);
 

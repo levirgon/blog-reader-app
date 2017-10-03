@@ -96,7 +96,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginRight="11dp"
                         android:layout_marginTop="8dp"
                         android:padding="8dp"
                         android:text="@string/_5_minutes_ago"
@@ -109,32 +109,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:padding="8dp"
                         android:text="Blog Title"
+                        android:textAlignment="textStart"
+                        android:textAllCaps="true"
+                        android:textSize="18sp"
                         android:textStyle="bold|italic"
                         app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/last_update_full"
                         tools:ignore="HardcodedText"/>
-
-                    <TextView
-                        android:id="@+id/blog_description"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="15dp"
-                        android:maxLines="100"
-                        android:padding="8dp"
-                        android:scrollIndicators="right"
-                        android:text="Papiya asked me to leave before she become weak to leave me. She told me to go somewhere, where she will never be able to come, or find me again. None of us cried. We knew that was the last time we were seeing each other. I moved from my neighbour's village silently. I walked very slowly to remember everything of my life. I and Papiya used to go to school together. The field I was passing was the place where one day I fainted after seeing a snake. Papiya was always brave, she took that snake in a stick and throw into the water. I laughed a lot by thinking about all those stupid things. Both of us are very poor. Many days, our families are unable to eat anything other than rice. During flood we starved countless days. And then Papiya was chosen by a rich family, she will be able to take care her siblings and sick mother after her marriage. I wanted to be selfish, I wanted to tell her to come with me and fly somewhere. But then I could not. I wanted to see her happy even at the cost of leaving me. When I explained her how much I wanted her happiness, she did not respond. She only asked me, ‘is that the suffering of food is greater than suffering of love?’ I was silent and when I saw tears in her eyes, for the first and last time, I lovingly touched her cheeks. It’s been six months, I am in the city, riding rickshaw and sleeping here and there. Papiya is married and gone far. In this life, I will never be able to love someone as like I loved her. When we were giving SSC exam she gave me an amulet so I never feel fear. This is the only thing I tied in my hand and carry all the time. We promised that we will never meet each other again, we will never talk. Half of th"
-                        android:textAlignment="viewStart"
-                        android:textIsSelectable="true"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintLeft_toLeftOf="@+id/blog_title_full"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/blog_title_full"
-                        tools:ignore="HardcodedText,UnusedAttribute"/>
 
                     <TextView
                         android:id="@+id/total_comments_full"
@@ -193,6 +179,25 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/comment_box"
                         tools:ignore="HardcodedText"/>
+
+                    <TextView
+                        android:id="@+id/blog_description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="14dp"
+                        android:maxLines="100"
+                        android:padding="8dp"
+                        android:scrollIndicators="right"
+                        android:text="Papiya asked me to leave before she become weak to leave me. She told me to go somewhere, where she will never be able to come, or find me again. None of us cried. We knew that was the last time we were seeing each other. I moved from my neighbour's village silently. I walked very slowly to remember everything of my life. I and Papiya used to go to school together. The field I was passing was the place where one day I fainted after seeing a snake. Papiya was always brave, she took that snake in a stick and throw into the water. I laughed a lot by thinking about all those stupid things. Both of us are very poor. Many days, our families are unable to eat anything other than rice. During flood we starved countless days. And then Papiya was chosen by a rich family, she will be able to take care her siblings and sick mother after her marriage. I wanted to be selfish, I wanted to tell her to come with me and fly somewhere. But then I could not. I wanted to see her happy even at the cost of leaving me. When I explained her how much I wanted her happiness, she did not respond. She only asked me, ‘is that the suffering of food is greater than suffering of love?’ I was silent and when I saw tears in her eyes, for the first and last time, I lovingly touched her cheeks. It’s been six months, I am in the city, riding rickshaw and sleeping here and there. Papiya is married and gone far. In this life, I will never be able to love someone as like I loved her. When we were giving SSC exam she gave me an amulet so I never feel fear. This is the only thing I tied in my hand and carry all the time. We promised that we will never meet each other again, we will never talk. Half of th"
+                        android:textAlignment="viewStart"
+                        android:textIsSelectable="true"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/blog_title_full"
+                        tools:ignore="HardcodedText,UnusedAttribute"/>
 
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>

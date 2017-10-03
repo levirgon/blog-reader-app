@@ -1,4 +1,4 @@
-package com.example.noushad.blogbee.model.allPostsResponseModel;
+package com.example.noushad.blogbee.model.singlePostResponseModel;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,16 +7,16 @@ import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
-public class DataItem {
-
-    @SerializedName("comment_count")
-    private String commentCount;
+public class SinglePostResponse {
 
     @SerializedName("cover_photo")
     private String coverPhoto;
 
     @SerializedName("creator_info")
     private CreatorInfo creatorInfo;
+
+    @SerializedName("comments")
+    private List<CommentsItem> comments;
 
     @SerializedName("user_id")
     private int userId;
@@ -33,33 +33,22 @@ public class DataItem {
     @SerializedName("id")
     private int id;
 
-    @SerializedName("categories")
-    private List<CategoriesItem> categories;
-
     @SerializedName("title")
     private String title;
 
     @SerializedName("creationDate")
     private String creationDate;
 
-    public String getCommentCount() {
-        return commentCount;
-    }
-
     public String getCoverPhoto() {
         return coverPhoto;
-    }
-
-    public boolean hasCoverPhoto() {
-        return coverPhoto != null;
     }
 
     public CreatorInfo getCreatorInfo() {
         return creatorInfo;
     }
 
-    public boolean hasCreatorInfo() {
-        return creatorInfo != null;
+    public List<CommentsItem> getComments() {
+        return comments;
     }
 
     public int getUserId() {
@@ -82,10 +71,6 @@ public class DataItem {
         return id;
     }
 
-    public List<CategoriesItem> getCategories() {
-        return categories;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -94,19 +79,22 @@ public class DataItem {
         return creationDate;
     }
 
+    public int getTotalCommentsCount() {
+        return getComments() != null ? getComments().size() : 0;
+    }
+
     @Override
     public String toString() {
         return
-                "DataItem{" +
-                        "comment_count = '" + commentCount + '\'' +
-                        ",cover_photo = '" + coverPhoto + '\'' +
+                "SinglePostResponse{" +
+                        "cover_photo = '" + coverPhoto + '\'' +
                         ",creator_info = '" + creatorInfo + '\'' +
+                        ",comments = '" + comments + '\'' +
                         ",user_id = '" + userId + '\'' +
                         ",deletedDate = '" + deletedDate + '\'' +
                         ",lastChange = '" + lastChange + '\'' +
                         ",details = '" + details + '\'' +
                         ",id = '" + id + '\'' +
-                        ",categories = '" + categories + '\'' +
                         ",title = '" + title + '\'' +
                         ",creationDate = '" + creationDate + '\'' +
                         "}";

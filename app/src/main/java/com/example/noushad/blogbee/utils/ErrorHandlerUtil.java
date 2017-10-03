@@ -6,7 +6,7 @@ package com.example.noushad.blogbee.utils;
 
 public class ErrorHandlerUtil {
 
-//    public static<T>  String handleErrorResponse(T pojo, Response response) {
+//    public static<T>  String handleErrorResponse(T pojo, SinglePostResponse response) {
 //        String msg;
 //        Gson gson = new GsonBuilder().create();
 //

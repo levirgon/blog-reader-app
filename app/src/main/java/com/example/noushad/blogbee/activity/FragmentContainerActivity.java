@@ -20,9 +20,10 @@ import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.fragment.BlogCreationFragment;
 import com.example.noushad.blogbee.fragment.BlogViewFragment;
 import com.example.noushad.blogbee.fragment.ListFragment;
+import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 
 
-public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface {
+public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface,PaginationAdapterCallback {
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -32,8 +33,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     public static final String BLOG_VIEW_FRAGMENT = "blog_view_fragment";
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String RETRIEVE_FRAGMENT = "retrieve fragment";
-    public  String CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
-
+    public String CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
 
 
     @Override
@@ -140,9 +140,17 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
     @Override
     public void onListBlogSelected(int index) {
+//
+//        BlogViewFragment blogViewFragment = new BlogViewFragment();
+//        startFragment(blogViewFragment, REPLACE);
 
-        BlogViewFragment blogViewFragment = new BlogViewFragment();
-        startFragment(blogViewFragment, REPLACE);
+        BlogViewFragment blogViewFragment = BlogViewFragment.newInstance(index);
+        startFragment(blogViewFragment,REPLACE);
 
+    }
+
+    @Override
+    public void retryPageLoad() {
+        //
     }
 }
