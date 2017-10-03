@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.fragment.BlogCreationFragment;
@@ -128,6 +129,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
             case R.id.bookmarks:
             case R.id.settings:
             case R.id.action_logout:
+                Toast.makeText(getApplicationContext(),"logout click",Toast.LENGTH_SHORT).show();
                 logout();
                 break;
 

@@ -47,7 +47,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     private boolean isLastPage = false;
 
     private int TOTAL_PAGES = 20; // just a initial dummy value
-    private int mCurrentPage = 0;
+    private int mCurrentPage = 1;
     LinearLayoutManager linearLayoutManager;
 
     ProgressBar progressBar;
@@ -108,6 +108,8 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
                     Toast.makeText(getActivity(), String.valueOf(TOTAL_PAGES), Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     mAdapter.addAll(dataItems);
+                    if (mCurrentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
+                    else isLastPage = true;
                 }
             }
 

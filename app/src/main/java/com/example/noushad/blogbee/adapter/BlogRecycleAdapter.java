@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -18,6 +19,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.noushad.blogbee.R;
+import com.example.noushad.blogbee.activity.FragmentContainerActivity;
 import com.example.noushad.blogbee.fragment.ListFragment;
 import com.example.noushad.blogbee.model.allPostsResponseModel.DataItem;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
@@ -108,7 +110,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
 
 
     private class BlogVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-
+        protected Context context;
         private ImageView mCoverImage;
         private ImageView mProfileImage;
         private TextView mLastUpdatedTextView;
@@ -127,11 +129,12 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            int clickId = mDataItem.getId();
-            mListener.onListBlogSelected(clickId);
-        }
+//        @Override
+//        public void onClick(View v) {
+//            int clickId = v.getId();
+//          //  Toast.makeText(context.getApplicationContext(),clickId + "",Toast.LENGTH_SHORT).show();
+//            mListener.onListBlogSelected(clickId);
+//        }
 
 
 
@@ -145,6 +148,13 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             }
             mTitleTextView.setText(mDataItem.getTitle());
             mCommentCountTextView.setText(String.valueOf("Total Comments : " + mDataItem.getCommentCount()));
+        }
+
+        @Override
+        public void onClick(View view) {
+            int pos = getAdapterPosition();
+            int id = mItems.get(pos).getId();
+            mListener.onListBlogSelected(id);
         }
     }
 

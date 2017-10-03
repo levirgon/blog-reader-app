@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.noushad.blogbee.model.CreatorInfo;
+import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
 
 /**
@@ -83,17 +84,17 @@ public class SharedPrefManager {
 //        return false;
 //    }
 //
-//    public User getUser() {
-//        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//
-//        return new User(
-//                sharedPreferences.getInt(KEY_USER_ID, 0),
-//                sharedPreferences.getString(KEY_USER_NAME, null),
-//                sharedPreferences.getString(KEY_USER_EMAIL, null),
-//
-//                sharedPreferences.getString(KEY_USER_PROFILE_PIC, null)
-//        );
-//    }
+    public UserViewModel getUser() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+        return new UserViewModel(
+                sharedPreferences.getInt(KEY_USER_ID, 0),
+                sharedPreferences.getString(KEY_USER_NAME, null),
+                sharedPreferences.getString(KEY_USER_EMAIL, null),
+
+                sharedPreferences.getString(KEY_USER_PROFILE_PIC, null)
+        );
+    }
 //
     public boolean logout() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);

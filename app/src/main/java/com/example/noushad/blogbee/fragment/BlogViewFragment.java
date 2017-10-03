@@ -68,7 +68,7 @@ public class BlogViewFragment extends Fragment {
         collapsingToolbar.setTitle("Blog View");
 
 
-        mCoverImageView = (ImageView) view.findViewById(R.id.app_bar_image);
+       // mCoverImageView = (ImageView) view.findViewById(R.id.app_bar_image);
         mNameTextView = (TextView) view.findViewById(R.id.name_text_full);
         mLastUpdateTextView = (TextView) view.findViewById(R.id.last_update_full);
         mTitleTextView = (TextView) view.findViewById(R.id.blog_title_full);
@@ -135,7 +135,7 @@ public class BlogViewFragment extends Fragment {
 //           mTotalCommentsTextView.setText((postResponse.getComments()).size());
 //           Toast.makeText(getActivity(),"comments size loaded", Toast.LENGTH_LONG).show();
 
-            LoadImageFromWebOperations(mCoverImageView, postResponse.getCoverPhoto());
+          //  LoadImageFromWebOperations(mCoverImageView, postResponse.getCoverPhoto());
             mNameTextView.setText(postResponse.getCreatorInfo().getName());
 //           Toast.makeText(getActivity(),postResponse.getCreatorInfo().getName(), Toast.LENGTH_LONG).show();
 
