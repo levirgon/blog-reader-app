@@ -63,9 +63,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (mEmail.isEmpty() || mPassword.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Please Fill up All Required fields", Toast.LENGTH_SHORT).show();
                 } else {
-
-//                    Intent intent = new Intent(LoginActivity.this, FragmentContainerActivity.class);
-//                    startActivity(intent);
                     userLogin(mEmail, mPassword);
 
                 }
