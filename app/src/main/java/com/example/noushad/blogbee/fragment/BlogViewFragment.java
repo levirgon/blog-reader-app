@@ -12,10 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
@@ -47,6 +52,7 @@ public class BlogViewFragment extends Fragment {
     private TextView mTotalCommentsTextView;
     private View mView;
     private int mPostId;
+    private ProgressBar mProgressBar;
 
     public static BlogViewFragment newInstance(int index) {
         Bundle bundle = new Bundle();
@@ -60,15 +66,13 @@ public class BlogViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.blog_view, container, false);
-
         mView = view;
         getActivity().setTitle("Blog View");
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("Blog View");
-
-
-       // mCoverImageView = (ImageView) view.findViewById(R.id.app_bar_image);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.blog_loading_progress);
+        mCoverImageView = (ImageView) view.findViewById(R.id.blog_cover);
         mNameTextView = (TextView) view.findViewById(R.id.name_text_full);
         mLastUpdateTextView = (TextView) view.findViewById(R.id.last_update_full);
         mTitleTextView = (TextView) view.findViewById(R.id.blog_title_full);
@@ -76,8 +80,6 @@ public class BlogViewFragment extends Fragment {
         mTotalCommentsTextView = (TextView) view.findViewById(R.id.total_comments_full);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,88 +87,92 @@ public class BlogViewFragment extends Fragment {
                 Snackbar snackbar = Snackbar.make(view, "Blog Bookmarked", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Snackbar snackbar1 = Snackbar.make(view, "Removed From Bookmarks!", Snackbar.LENGTH_SHORT);
-                        snackbar1.show();
+                        Snackbar bookmarkSnack = Snackbar.make(view, "Removed From Bookmarks!", Snackbar.LENGTH_SHORT);
+                        bookmarkSnack.show();
                     }
                 });
                 ;
                 snackbar.show();
             }
         });
-
         mService = ServiceGenerator.createService(ApiInterface.class);
-
         mPostId = (int) getArguments().getSerializable(ARG_POST_ID);
-        Toast.makeText(getActivity(), String.valueOf(mPostId), Toast.LENGTH_LONG).show();
         getPostFromServer(mPostId, view);
-
-
         return view;
     }
 
     private void getPostFromServer(int id, final View view) {
+        setLayoutVisibility(View.INVISIBLE);
         Call<SinglePostResponse> singlePostResponse = mService.getSpecifiedPost(id);
 
         singlePostResponse.enqueue(new Callback<SinglePostResponse>() {
             @Override
             public void onResponse(Call<SinglePostResponse> call, Response<SinglePostResponse> response) {
+                mProgressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     try {
                         SinglePostResponse postResponse = response.body();
-                        //Toast.makeText(getActivity(), postResponse.getDetails(), Toast.LENGTH_LONG).show();
                         updateUI(view, postResponse);
-
                     } catch (Exception e) {
-                        Toast.makeText(getActivity(), "problem parsing response", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<SinglePostResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), "failed to get response", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    private void setLayoutVisibility(int command) {
+
+        mTotalCommentsTextView.setVisibility(command);
+        mNameTextView.setVisibility(command);
+        mLastUpdateTextView.setVisibility(command);
+        mTitleTextView.setVisibility(command);
+        mBlogDescription.setVisibility(command);
+        mCoverImageView.setVisibility(command);
+    }
+
     private void updateUI(View view, SinglePostResponse postResponse) {
-
+        setLayoutVisibility(View.VISIBLE);
         try {
-//           mTotalCommentsTextView.setText((postResponse.getComments()).size());
-//           Toast.makeText(getActivity(),"comments size loaded", Toast.LENGTH_LONG).show();
-
-          //  LoadImageFromWebOperations(mCoverImageView, postResponse.getCoverPhoto());
+            mTotalCommentsTextView.setText(String.valueOf(postResponse.getComments().size()));
+            LoadImageFromWebOperations(mCoverImageView, postResponse.getCoverPhoto());
             mNameTextView.setText(postResponse.getCreatorInfo().getName());
-//           Toast.makeText(getActivity(),postResponse.getCreatorInfo().getName(), Toast.LENGTH_LONG).show();
-
             mLastUpdateTextView.setText(postResponse.getLastChange());
-            //         Toast.makeText(getActivity(),"last change loaded", Toast.LENGTH_LONG).show();
-
             mTitleTextView.setText(postResponse.getTitle());
-            //       Toast.makeText(getActivity(),"title loaded", Toast.LENGTH_LONG).show();
-
             mBlogDescription.setText(postResponse.getDetails());
-            //     Toast.makeText(getActivity(),"description loaded", Toast.LENGTH_LONG).show();
-
             setUpCommentsList(postResponse.getComments(), view);
-            //   Toast.makeText(getActivity(),"comments loaded", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
-            Toast.makeText(getActivity(), "problem here", Toast.LENGTH_LONG).show();
+            setLayoutVisibility(View.GONE);
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }
 
     public void LoadImageFromWebOperations(final ImageView imageView, final String url) {
 
-        Glide.with(getActivity()).load(url).into(imageView);
+        Glide.with(getActivity()).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                imageView.setImageResource(R.drawable.wait);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        }).into(imageView);
     }
 
     private void setUpCommentsList(List<CommentsItem> comments, final View view) {
         CommentsAdapter commentsAdapter = new CommentsAdapter((AppCompatActivity) getActivity(), comments);
-
         ListView listView = (ListView) view.findViewById(R.id.comments_list);
-
         listView.setAdapter(commentsAdapter);
     }
 }

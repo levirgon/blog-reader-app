@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
@@ -88,7 +87,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
         errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
-        // updateUI();
         return view;
     }
 
@@ -101,8 +99,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
                 if (response.isSuccessful()) {
                     List<DataItem> dataItems = (response.body()).getData();
                     TOTAL_PAGES = response.body().getMeta().getPagination().getTotalPages();
-                    // updateUI(dataItems);
-                    Toast.makeText(getActivity(), String.valueOf(TOTAL_PAGES), Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     mAdapter.addAll(dataItems);
                     if (mCurrentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
@@ -112,7 +108,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
 
             @Override
             public void onFailure(Call<AllpostsResponse> call, Throwable t) {
-                // Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
                 showErrorView(t);
             }
         });
@@ -138,9 +133,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     }
 
     private void updateUI() {
-
-
-        Toast.makeText(getActivity(), "update ui called", Toast.LENGTH_SHORT).show();
         if (mAdapter == null) {
             mAdapter = new BlogRecycleAdapter(getActivity(), mListener, mCallback);
             mRecyclerView.setAdapter(mAdapter);
@@ -162,8 +154,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
             protected void loadMoreItems() {
                 isLoading = true;
                 mCurrentPage++;
-                Toast.makeText(getActivity(), "loading next page", Toast.LENGTH_LONG).show();
-
                 loadNextPage();
             }
 
@@ -194,11 +184,8 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
                 if (response.isSuccessful()) {
                     mAdapter.removeLoadingFooter();
                     isLoading = false;
-                    Toast.makeText(getActivity(), String.valueOf(mCurrentPage) + " loading ...", Toast.LENGTH_LONG).show();
-
                     List<DataItem> results = response.body().getData();
                     mAdapter.addAll(results);
-
                     if (mCurrentPage != TOTAL_PAGES) mAdapter.addLoadingFooter();
                     else isLastPage = true;
                 }
@@ -206,7 +193,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
 
             @Override
             public void onFailure(Call<AllpostsResponse> call, Throwable t) {
-                // Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
                 showErrorView(t);
             }
         });
@@ -219,7 +205,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getActivity(), "onResume called", Toast.LENGTH_SHORT).show();
         updateUI();
     }
 
