@@ -75,23 +75,20 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        getActivity().setTitle("Blogs Feed");
+        getActivity().setTitle("News Feed");
 
+        View view = inflater.inflate(R.layout.fragments_list, container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         mService = ServiceGenerator.createService(ApiInterface.class);
         mListener = (OnItemSelectedInterface) getActivity();
         mCallback = (PaginationAdapterCallback) getActivity();
-        View view = inflater.inflate(R.layout.fragments_list, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-
         mRecyclerView.setLayoutManager(linearLayoutManager);
         progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
         errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
-
-        //fetchData();
-        updateUI();
+        // updateUI();
         return view;
     }
 
@@ -142,8 +139,12 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
 
     private void updateUI() {
 
+
+        Toast.makeText(getActivity(), "update ui called", Toast.LENGTH_SHORT).show();
         if (mAdapter == null) {
             mAdapter = new BlogRecycleAdapter(getActivity(), mListener, mCallback);
+            mRecyclerView.setAdapter(mAdapter);
+        }else{
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -193,7 +194,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
                 if (response.isSuccessful()) {
                     mAdapter.removeLoadingFooter();
                     isLoading = false;
-                    Toast.makeText(getActivity(), String.valueOf(mCurrentPage)+" loading ...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), String.valueOf(mCurrentPage) + " loading ...", Toast.LENGTH_LONG).show();
 
                     List<DataItem> results = response.body().getData();
                     mAdapter.addAll(results);
@@ -218,6 +219,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     @Override
     public void onResume() {
         super.onResume();
+        Toast.makeText(getActivity(), "onResume called", Toast.LENGTH_SHORT).show();
         updateUI();
     }
 

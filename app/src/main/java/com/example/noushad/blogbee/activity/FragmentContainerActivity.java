@@ -148,9 +148,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
     @Override
     public void onListBlogSelected(int index) {
-//
-//        BlogViewFragment blogViewFragment = new BlogViewFragment();
-//        startFragment(blogViewFragment, REPLACE);
 
         BlogViewFragment blogViewFragment = BlogViewFragment.newInstance(index);
         startFragment(blogViewFragment,REPLACE);

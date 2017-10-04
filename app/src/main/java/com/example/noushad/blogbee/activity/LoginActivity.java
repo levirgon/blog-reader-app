@@ -16,11 +16,9 @@ import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
 import com.example.noushad.blogbee.model.CreatorInfo;
 import com.example.noushad.blogbee.model.SimpleError;
 import com.example.noushad.blogbee.model.ValidationError.ValidationError;
-import com.example.noushad.blogbee.model.loginResponseModel.LogInError;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -102,7 +100,6 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPrefManager.getInstance(getApplicationContext()).userLoginDataUpdate(aInformation);
                     setLoggedInUserInformation();
 
-                    // startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }else if (response.code()==422){
                     JsonParser parser = new JsonParser();
                     JsonElement mJson = null;
@@ -120,8 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         mJson = parser.parse(response.errorBody().string());
                         Gson gson = new Gson();
-                        SimpleError simpleerrorRes = gson.fromJson(mJson, SimpleError.class);
-                        Toast.makeText(getApplicationContext(),simpleerrorRes.getError().toString(),Toast.LENGTH_SHORT).show();
+                        SimpleError simpleErrorRes = gson.fromJson(mJson, SimpleError.class);
+                        Toast.makeText(getApplicationContext(),simpleErrorRes.getError().toString(),Toast.LENGTH_SHORT).show();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }

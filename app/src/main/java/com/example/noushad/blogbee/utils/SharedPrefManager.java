@@ -13,7 +13,7 @@ import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse
 
 public class SharedPrefManager {
     private static SharedPrefManager mInstance;
-    private static Context mCtx;
+    private static Context sContext;
 
     private static final String SHARED_PREF_NAME = "simplifiedcodingsharedprefretrofit";
 
@@ -27,7 +27,7 @@ public class SharedPrefManager {
     private static final String KEY_USER_TOKEN_EXPIRE = "keyusertokenexpire";
 
     private SharedPrefManager(Context context) {
-        mCtx = context;
+        sContext = context;
     }
 
     public static synchronized SharedPrefManager getInstance(Context context) {
@@ -38,7 +38,7 @@ public class SharedPrefManager {
     }
 //
     public boolean userLoginDataUpdate(LogInSuccessResponse loginData) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(KEY_USER_TOKEN_TYPE, loginData.getTokenType());
@@ -50,7 +50,7 @@ public class SharedPrefManager {
     }
 //
     public boolean userOwnDataUpdate(CreatorInfo user) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_USER_ID, user.getId());
         editor.putString(KEY_USER_NAME, user.getName());
@@ -62,7 +62,7 @@ public class SharedPrefManager {
 //
 //
     public boolean isLoggedIn() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         if (sharedPreferences.getString(KEY_USER_ACCESS_TOKEN, null) != null)
             return true;
         return false;
@@ -70,22 +70,15 @@ public class SharedPrefManager {
 
     public String getAuthToken(){
 
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String info = sharedPreferences.getString(KEY_USER_TOKEN_TYPE, null)
                 +" "+ sharedPreferences.getString(KEY_USER_ACCESS_TOKEN, null);
         System.out.println(info);
         return info;
     }
-//
-//    public boolean isGetUserData() {
-//        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//        if (sharedPreferences.getString(KEY_USER_EMAIL, null) != null)
-//            return true;
-//        return false;
-//    }
-//
+
     public UserViewModel getUser() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         return new UserViewModel(
                 sharedPreferences.getInt(KEY_USER_ID, 0),
@@ -97,7 +90,7 @@ public class SharedPrefManager {
     }
 //
     public boolean logout() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
