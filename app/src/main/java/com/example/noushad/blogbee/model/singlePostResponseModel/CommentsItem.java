@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class CommentsItem{
 
 	@SerializedName("creator_info")
-	private CreatorInfo creatorInfo;
+	private BloggerInfo creatorInfo;
 
 	@SerializedName("post_id")
 	private int postId;
@@ -30,7 +30,7 @@ public class CommentsItem{
 	@SerializedName("creationDate")
 	private String creationDate;
 
-	public CreatorInfo getCreatorInfo(){
+	public BloggerInfo getCreatorInfo(){
 		return creatorInfo;
 	}
 

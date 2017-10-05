@@ -132,8 +132,8 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             mLastUpdatedTextView.setText(mDataItem.getLastChange());
             LoadImageFromWebOperations(mCoverImage, mDataItem.getCoverPhoto());
             if (mDataItem.hasCreatorInfo()) {
-                LoadImageFromWebOperations(mProfileImage, (mDataItem.getCreatorInfo()).getCoverPhoto());
-                mNameTextView.setText((mDataItem.getCreatorInfo()).getName());
+                LoadImageFromWebOperations(mProfileImage, (mDataItem.getUserInfo()).getCoverPhoto());
+                mNameTextView.setText((mDataItem.getUserInfo()).getName());
             }
             mTitleTextView.setText(mDataItem.getTitle());
             mCommentCountTextView.setText(String.valueOf("Total Comments : " + mDataItem.getCommentCount()));

@@ -13,7 +13,7 @@ public class SinglePostResponse {
     private String coverPhoto;
 
     @SerializedName("creator_info")
-    private CreatorInfo creatorInfo;
+    private BloggerInfo creatorInfo;
 
     @SerializedName("comments")
     private List<CommentsItem> comments;
@@ -43,7 +43,7 @@ public class SinglePostResponse {
         return coverPhoto;
     }
 
-    public CreatorInfo getCreatorInfo() {
+    public BloggerInfo getCreatorInfo() {
         return creatorInfo;
     }
 

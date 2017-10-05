@@ -15,17 +15,26 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.fragment.BlogCreationFragment;
 import com.example.noushad.blogbee.fragment.BlogViewFragment;
 import com.example.noushad.blogbee.fragment.ListFragment;
+import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 
 
-public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface,PaginationAdapterCallback {
+public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface, PaginationAdapterCallback {
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -43,28 +52,45 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_container);
         setNavigationViewListner();
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
-
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         Fragment savedFragment = getSupportFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG);
-
         if (savedFragment == null)
             startFragment(new ListFragment(), CREATE_NEW);
 
-
     }
 
+    private void setUserCredentials(View view) {
+        UserViewModel user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
+        ImageView userProfileImage = (ImageView) view.findViewById(R.id.navigation_header_profile_image);
+        TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
+        userName.setText(user.getName());
+        if (user.getCoverPhoto() != null)
+            loadImageFromWebOperations(userProfileImage, user.getCoverPhoto());
+        else
+            userProfileImage.setVisibility(View.GONE);
+    }
+
+    private void loadImageFromWebOperations(final ImageView imageView, final String url) {
+
+        Glide.with(getApplicationContext()).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                imageView.setImageResource(R.drawable.wait);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        }).into(imageView);
+    }
 
     @Override
     public void onBackPressed() {
@@ -83,7 +109,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     private void setNavigationViewListner() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.blog_navigation);
         navigationView.setNavigationItemSelectedListener(this);
-
+        setUserCredentials(navigationView.getHeaderView(0));
     }
 
     private void startFragment(Fragment fragment, int command) {
@@ -129,7 +155,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
             case R.id.bookmarks:
             case R.id.settings:
             case R.id.action_logout:
-                Toast.makeText(getApplicationContext(),"logout click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Logging Out...", Toast.LENGTH_SHORT).show();
                 logout();
                 break;
 
@@ -150,7 +176,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     public void onListBlogSelected(int index) {
 
         BlogViewFragment blogViewFragment = BlogViewFragment.newInstance(index);
-        startFragment(blogViewFragment,REPLACE);
+        startFragment(blogViewFragment, REPLACE);
 
     }
 

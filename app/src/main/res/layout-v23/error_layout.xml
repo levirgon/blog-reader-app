@@ -15,9 +15,10 @@
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sorry couldn't fetch movies"/>
+            android:text="sorry couldn't fetch Blogs"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/error_txt_cause"

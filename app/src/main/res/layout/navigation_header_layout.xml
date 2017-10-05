@@ -2,29 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:background="@drawable/back"
+                android:background="@drawable/blog_cover"
                 android:orientation="vertical"
                 android:padding="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/navigation_header_profile_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/cover_image"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/navigation_header_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/navigation_header_profile_image"
-        android:padding="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:fontFamily="cursive"
         android:text="@string/navigation_header"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp"/>
+        android:textSize="24sp"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/navigation_header_profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/navigation_header_user_name"
-        android:layout_alignParentStart="true"
-
-        android:layout_marginStart="16dp"
-        android:background="@mipmap/ic_launcher_round"
-        android:contentDescription="@string/cover_image"/>
 </RelativeLayout>

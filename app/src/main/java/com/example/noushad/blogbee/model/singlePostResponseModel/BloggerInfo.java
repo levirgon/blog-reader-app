@@ -1,10 +1,10 @@
-package com.example.noushad.blogbee.model.allPostsResponseModel;
+package com.example.noushad.blogbee.model.singlePostResponseModel;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("com.robohorse.robopojogenerator")
-public class CreatorInfo{
+public class BloggerInfo {
 
 	@SerializedName("cover_photo")
 	private String coverPhoto;
@@ -72,7 +72,7 @@ public class CreatorInfo{
 	@Override
  	public String toString(){
 		return 
-			"CreatorInfo{" + 
+			"BloggerInfo{" +
 			"cover_photo = '" + coverPhoto + '\'' + 
 			",isVerified = '" + isVerified + '\'' + 
 			",deletedDate = '" + deletedDate + '\'' + 

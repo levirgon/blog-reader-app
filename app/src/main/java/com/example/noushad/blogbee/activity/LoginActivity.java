@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
     private void setLoggedInUserInformation() {
 
 
-        progressDialog.setMessage("Get User Information...");
+        progressDialog.setMessage("Getting User Information...");
         progressDialog.show();
 
         //building retrofit object

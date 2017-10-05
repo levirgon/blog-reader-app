@@ -15,6 +15,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="@string/name"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/textView13"/>
 
@@ -26,6 +27,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="@string/e_mail"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8"/>
 
@@ -37,6 +39,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="@string/phone_number"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
@@ -48,6 +51,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="@string/password"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/textView10"/>
 
@@ -59,6 +63,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="@string/confirm_password"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/textView11"/>
 
@@ -70,7 +75,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="0dp"
         android:ems="10"
-        android:fontFamily="cursive"
+        android:fontFamily="monospace"
         android:inputType="textPersonName"
         android:labelFor="@+id/account_name"
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
@@ -86,6 +91,7 @@
         android:fontFamily="cursive"
         android:text="@string/register"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -98,7 +104,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:ems="10"
-        android:fontFamily="cursive"
+        android:fontFamily="monospace"
         android:inputType="textEmailAddress"
         android:labelFor="@+id/account_email"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
@@ -115,7 +121,7 @@
         android:layout_marginEnd="0dp"
         android:layout_marginTop="0dp"
         android:ems="10"
-        android:fontFamily="cursive"
+        android:fontFamily="monospace"
         android:hint="+8801"
         android:inputType="phone"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
@@ -131,7 +137,7 @@
         android:layout_marginEnd="-1dp"
         android:layout_marginTop="0dp"
         android:ems="10"
-        android:fontFamily="cursive"
+        android:fontFamily="monospace"
         android:inputType="numberPassword"
         android:labelFor="@+id/account_password"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
@@ -146,7 +152,7 @@
         android:layout_marginEnd="0dp"
         android:layout_marginTop="0dp"
         android:ems="10"
-        android:fontFamily="cursive"
+        android:fontFamily="monospace"
         android:inputType="numberPassword"
         android:labelFor="@+id/account_confirm_password"
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
@@ -163,7 +169,7 @@
         android:background="@color/colorPrimaryDark"
         android:fontFamily="cursive"
         android:text="Register"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/textView12"

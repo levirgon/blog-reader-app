@@ -16,7 +16,7 @@ public class DataItem {
     private String coverPhoto;
 
     @SerializedName("creator_info")
-    private CreatorInfo creatorInfo;
+    private UserInfo mUserInfo;
 
     @SerializedName("user_id")
     private int userId;
@@ -54,12 +54,12 @@ public class DataItem {
         return coverPhoto != null;
     }
 
-    public CreatorInfo getCreatorInfo() {
-        return creatorInfo;
+    public UserInfo getUserInfo() {
+        return mUserInfo;
     }
 
     public boolean hasCreatorInfo() {
-        return creatorInfo != null;
+        return mUserInfo != null;
     }
 
     public int getUserId() {
@@ -100,7 +100,7 @@ public class DataItem {
                 "DataItem{" +
                         "comment_count = '" + commentCount + '\'' +
                         ",cover_photo = '" + coverPhoto + '\'' +
-                        ",creator_info = '" + creatorInfo + '\'' +
+                        ",creator_info = '" + mUserInfo + '\'' +
                         ",user_id = '" + userId + '\'' +
                         ",deletedDate = '" + deletedDate + '\'' +
                         ",lastChange = '" + lastChange + '\'' +
