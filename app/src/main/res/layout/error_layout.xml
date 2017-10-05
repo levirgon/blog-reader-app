@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="sorry couldn't fetch Blogs"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            tools:ignore="HardcodedText"/>
 
         <TextView
             android:id="@+id/error_txt_cause"
@@ -27,6 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="4dp"
+            android:padding="8dp"
+            android:textAlignment="center"
             tools:text="The server took too long to respond."/>
 
         <Button
@@ -37,7 +40,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
             android:text="retry"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            tools:ignore="HardcodedText"/>
 
     </LinearLayout>
 

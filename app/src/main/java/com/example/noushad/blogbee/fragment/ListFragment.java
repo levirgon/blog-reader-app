@@ -61,7 +61,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
         loadNextPage();
     }
 
-
     public interface OnItemSelectedInterface {
 
         void onListBlogSelected(int index);
@@ -77,7 +76,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
 
         getActivity().setTitle("News Feed");
 
-        View view = inflater.inflate(R.layout.fragments_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         mService = ServiceGenerator.createService(ApiInterface.class);
         mListener = (OnItemSelectedInterface) getActivity();
