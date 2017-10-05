@@ -79,14 +79,16 @@ public class BlogViewFragment extends Fragment {
         mBlogDescription = (TextView) view.findViewById(R.id.blog_description);
         mTotalCommentsTextView = (TextView) view.findViewById(R.id.total_comments_full);
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        final FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                floatingActionButton.setImageResource(R.drawable.ic_favourite_added);
                 Snackbar snackbar = Snackbar.make(view, "Blog Bookmarked", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        floatingActionButton.setImageResource(R.drawable.ic_favourite_disabled);
                         Snackbar bookmarkSnack = Snackbar.make(view, "Removed From Bookmarks!", Snackbar.LENGTH_SHORT);
                         bookmarkSnack.show();
                     }

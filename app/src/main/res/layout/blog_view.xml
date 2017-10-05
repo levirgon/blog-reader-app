@@ -55,10 +55,10 @@
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:src="@drawable/ic_favourite_disabled"
-        app:backgroundTint="@android:color/transparent"
+        app:backgroundTint="@android:color/background_light"
         app:fabSize="normal"
-        app:layout_anchor="@+id/nestedScrollView"
-        app:layout_anchorGravity="top|right"/>
+        app:layout_anchor="@+id/collapsing_toolbar"
+        app:layout_anchorGravity="bottom|right"/>
 
     <ProgressBar
         android:id="@+id/blog_loading_progress"
@@ -68,7 +68,6 @@
         android:layout_gravity="center"/>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
@@ -188,7 +187,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="0dp"
                         android:background="@drawable/ic_comment_white_24dp"
-                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:backgroundTint="@color/colorPrimary"
                         android:fontFamily="cursive"
                         android:minWidth="48dp"
                         android:textColor="@color/cardview_light_background"
