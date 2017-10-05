@@ -44,7 +44,8 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
 
-    public BlogRecycleAdapter(Context context, ListFragment.OnItemSelectedInterface listener, PaginationAdapterCallback callback) {
+    public BlogRecycleAdapter(Context context, ListFragment.OnItemSelectedInterface listener,
+                              PaginationAdapterCallback callback) {
 
         mContext = context;
         mItems = new ArrayList<>();
@@ -102,6 +103,11 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return (position == mItems.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+    }
+
+    @Override
     public int getItemCount() {
         return mItems == null ? 0 : mItems.size();
     }
@@ -136,7 +142,8 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
                 mNameTextView.setText((mDataItem.getUserInfo()).getName());
             }
             mTitleTextView.setText(mDataItem.getTitle());
-            mCommentCountTextView.setText(String.valueOf("Total Comments : " + mDataItem.getCommentCount()));
+            mCommentCountTextView.setText(String.valueOf("Total Comments : "
+                    + mDataItem.getCommentCount()));
         }
 
         @Override
@@ -189,7 +196,6 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
 
                     showRetry(false, null);
                     mCallback.retryPageLoad();
-
                     break;
             }
         }
@@ -199,7 +205,6 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
     public void showRetry(boolean show, @Nullable String errorMsg) {
         retryPageLoad = show;
         notifyItemChanged(mItems.size() - 1);
-
         if (errorMsg != null) this.errorMsg = errorMsg;
     }
 

@@ -3,6 +3,7 @@ package com.example.noushad.blogbee.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -83,6 +84,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
         mCallback = (PaginationAdapterCallback) getActivity();
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
         errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
@@ -136,7 +138,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
         if (mAdapter == null) {
             mAdapter = new BlogRecycleAdapter(getActivity(), mListener, mCallback);
             mRecyclerView.setAdapter(mAdapter);
-        }else{
+        } else {
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -181,8 +183,8 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
         callResponse().enqueue(new Callback<AllpostsResponse>() {
             @Override
             public void onResponse(Call<AllpostsResponse> call, Response<AllpostsResponse> response) {
+                mAdapter.removeLoadingFooter();
                 if (response.isSuccessful()) {
-                    mAdapter.removeLoadingFooter();
                     isLoading = false;
                     List<DataItem> results = response.body().getData();
                     mAdapter.addAll(results);
@@ -190,10 +192,9 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
                     else isLastPage = true;
                 }
             }
-
             @Override
             public void onFailure(Call<AllpostsResponse> call, Throwable t) {
-                showErrorView(t);
+                mAdapter.showRetry(true,t.getMessage());
             }
         });
     }
