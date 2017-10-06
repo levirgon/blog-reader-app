@@ -66,10 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Please Fill up All Required fields", Toast.LENGTH_SHORT).show();
                 } else {
                     userLogin(mEmail, mPassword);
-
                 }
-
-
             }
         });
 
@@ -94,31 +91,31 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LogInSuccessResponse> call, Response<LogInSuccessResponse> response) {
 
                 progressDialog.dismiss();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     LogInSuccessResponse aInformation = response.body();
                     SharedPrefManager.getInstance(getApplicationContext()).userLoginDataUpdate(aInformation);
                     setLoggedInUserInformation();
 
-                }else if (response.code()==422){
+                } else if (response.code() == 422) {
                     JsonParser parser = new JsonParser();
                     JsonElement mJson = null;
                     try {
                         mJson = parser.parse(response.errorBody().string());
                         Gson gson = new Gson();
                         ValidationError errorResponse = gson.fromJson(mJson, ValidationError.class);
-                        Toast.makeText(getApplicationContext(),errorResponse.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), errorResponse.toString(), Toast.LENGTH_SHORT).show();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                }else{
+                } else {
                     JsonParser parser = new JsonParser();
                     JsonElement mJson = null;
                     try {
                         mJson = parser.parse(response.errorBody().string());
                         Gson gson = new Gson();
                         SimpleError simpleErrorRes = gson.fromJson(mJson, SimpleError.class);
-                        Toast.makeText(getApplicationContext(),simpleErrorRes.getError().toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), simpleErrorRes.getError().toString(), Toast.LENGTH_SHORT).show();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -148,21 +145,21 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CreatorInfo> call, Response<CreatorInfo> response) {
                 progressDialog.dismiss();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     CreatorInfo others = response.body();
                     SharedPrefManager.getInstance(getApplicationContext()).userOwnDataUpdate(others);
-                    Toast.makeText(getApplicationContext(),"login successfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "login successfully", Toast.LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), FragmentContainerActivity.class));
-                }else{
+                } else {
                     JsonParser parser = new JsonParser();
                     JsonElement mJson = null;
                     try {
                         mJson = parser.parse(response.errorBody().string());
                         Gson gson = new Gson();
                         SimpleError simpleerrorRes = gson.fromJson(mJson, SimpleError.class);
-                        Toast.makeText(getApplicationContext(),simpleerrorRes.getError().toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), simpleerrorRes.getError().toString(), Toast.LENGTH_SHORT).show();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
