@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String BASE_URL = "http://everyone-journalist.tutexp.com/api/";
+    public static final String BASE_URL = "https://everyone-journalist.tutexp.com/api/";
 
     private static Retrofit.Builder retroBuilder =
             new Retrofit.Builder()

@@ -43,13 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_register);
 
-        mService = ServiceGenerator.createService(ApiInterface.class);
-        mNameEditText = (EditText) findViewById(R.id.account_name);
-        mEmailEditText = (EditText) findViewById(R.id.account_email);
-        mPhoneEditText = (EditText) findViewById(R.id.account_phone);
-        mPasswordEditText = (EditText) findViewById(R.id.account_password);
-        mConfirmPasswordEditText = (EditText) findViewById(R.id.account_confirm_password);
-        mRegisterButton = (Button) findViewById(R.id.register_button);
+        initializeViews();
 
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +76,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+
+    private void initializeViews() {
+        mService = ServiceGenerator.createService(ApiInterface.class);
+        mNameEditText = (EditText) findViewById(R.id.account_name);
+        mEmailEditText = (EditText) findViewById(R.id.account_email);
+        mPhoneEditText = (EditText) findViewById(R.id.account_phone);
+        mPasswordEditText = (EditText) findViewById(R.id.account_password);
+        mConfirmPasswordEditText = (EditText) findViewById(R.id.account_confirm_password);
+        mRegisterButton = (Button) findViewById(R.id.register_button);
+    }
+
     private boolean getInformation() {
 
         String name = "";

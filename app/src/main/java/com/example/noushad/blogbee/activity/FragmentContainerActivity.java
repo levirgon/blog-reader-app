@@ -2,7 +2,10 @@ package com.example.noushad.blogbee.activity;
 
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -21,11 +24,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.fragment.BlogCreationFragment;
 import com.example.noushad.blogbee.fragment.BlogViewFragment;
@@ -33,10 +31,12 @@ import com.example.noushad.blogbee.fragment.ListFragment;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
+import com.example.noushad.blogbee.utils.WebOperations;
 
 
 public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface, PaginationAdapterCallback {
 
+    private static final int PICK_IMAGE = 1;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout mDrawerLayout;
     public static final int CREATE_NEW = 1;
@@ -46,6 +46,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String RETRIEVE_FRAGMENT = "retrieve fragment";
     public String CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
+    private ImageView mNavUserProfileImage;
 
 
     @Override
@@ -53,8 +54,20 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
         setContentView(R.layout.activity_fragment_container);
         setNavigationViewListner();
+        initializeViews();
+        Fragment savedFragment = getSupportFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG);
+        if (savedFragment == null)
+            startFragment(new ListFragment(), CREATE_NEW);
+
+    }
+
+    private void initializeViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,38 +75,70 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Fragment savedFragment = getSupportFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG);
-        if (savedFragment == null)
-            startFragment(new ListFragment(), CREATE_NEW);
-
     }
 
     private void setUserCredentials(View view) {
         UserViewModel user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
-        ImageView userProfileImage = (ImageView) view.findViewById(R.id.navigation_header_profile_image);
+        mNavUserProfileImage = (ImageView) view.findViewById(R.id.navigation_header_profile_image);
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
-        if (user.getCoverPhoto() != null)
-            loadImageFromWebOperations(userProfileImage, user.getCoverPhoto());
-        else
-            userProfileImage.setVisibility(View.GONE);
+        if (user.getCoverPhoto() != null && hasValidPath(user.getCoverPhoto())) {
+            WebOperations.loadImage(this,mNavUserProfileImage, user.getCoverPhoto());
+        } else {
+            mNavUserProfileImage.setImageResource(R.drawable.no_profile_image);
+        }
+        mNavUserProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                getIntent.setType("image/*");
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
+
+                startActivityForResult(chooserIntent, PICK_IMAGE);
+            }
+        });
+
     }
 
-    private void loadImageFromWebOperations(final ImageView imageView, final String url) {
-
-        Glide.with(getApplicationContext()).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                imageView.setImageResource(R.drawable.wait);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                return false;
-            }
-        }).into(imageView);
+    private boolean hasValidPath(String coverPhotoPath) {
+        if (coverPhotoPath.equals("https://everyone-journalist.tutexp.com/img/"))
+            return false;
+        return true;
     }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        if (requestCode == PICK_IMAGE) {
+            //get the selected image...
+            Uri imageUri = intent.getData();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            Uri imageUri = data.getData();
+            String filePath = getPath(imageUri);
+            mNavUserProfileImage.setImageURI(imageUri);
+        }
+    }
+
+    private String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = this.getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+
 
     @Override
     public void onBackPressed() {

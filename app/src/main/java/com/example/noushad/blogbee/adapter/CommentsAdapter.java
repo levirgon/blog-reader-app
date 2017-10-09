@@ -58,7 +58,6 @@ public class CommentsAdapter extends ArrayAdapter<CommentsItem> {
                 .load(currentComment.getCreatorInfo().getCoverPhoto())
                 .fitCenter()
                 .into(commentImage);
-
         return listItemView;
 
     }

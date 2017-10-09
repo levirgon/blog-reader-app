@@ -46,18 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-        if (SharedPrefManager.getInstance(this).isLoggedIn()) {
-            finish();
-            startActivity(new Intent(this, FragmentContainerActivity.class));
-        }
-        progressDialog = new ProgressDialog(this);
-        mService = ServiceGenerator.createService(ApiInterface.class);
-        mEmailEditText = (EditText) findViewById(R.id.email_entry);
-        mPasswordEditText = (EditText) findViewById(R.id.password_entry);
-        mLoginButton = (Button) findViewById(R.id.login_button);
-        mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
-
-
+        initializeViews();
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +70,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initializeViews() {
+        progressDialog = new ProgressDialog(this);
+        mService = ServiceGenerator.createService(ApiInterface.class);
+        mEmailEditText = (EditText) findViewById(R.id.email_entry);
+        mPasswordEditText = (EditText) findViewById(R.id.password_entry);
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
     }
 
     private void userLogin(String email, String password) {
@@ -136,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setLoggedInUserInformation() {
-
 
         progressDialog.setMessage("Getting User Information...");
         progressDialog.show();

@@ -16,17 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
 import com.example.noushad.blogbee.adapter.CommentsAdapter;
 import com.example.noushad.blogbee.model.singlePostResponseModel.CommentsItem;
 import com.example.noushad.blogbee.model.singlePostResponseModel.SinglePostResponse;
+import com.example.noushad.blogbee.utils.WebOperations;
 
 import java.util.List;
 
@@ -67,18 +63,7 @@ public class BlogViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.blog_view, container, false);
         mView = view;
-        getActivity().setTitle("Blog View");
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("Blog View");
-        mProgressBar = (ProgressBar) view.findViewById(R.id.blog_loading_progress);
-        mCoverImageView = (ImageView) view.findViewById(R.id.blog_cover);
-        mNameTextView = (TextView) view.findViewById(R.id.name_text_full);
-        mLastUpdateTextView = (TextView) view.findViewById(R.id.last_update_full);
-        mTitleTextView = (TextView) view.findViewById(R.id.blog_title_full);
-        mBlogDescription = (TextView) view.findViewById(R.id.blog_description);
-        mTotalCommentsTextView = (TextView) view.findViewById(R.id.total_comments_full);
-
+        initializeViews(view);
         final FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +86,20 @@ public class BlogViewFragment extends Fragment {
         mPostId = (int) getArguments().getSerializable(ARG_POST_ID);
         getPostFromServer(mPostId, view);
         return view;
+    }
+
+    private void initializeViews(View view) {
+        getActivity().setTitle("Blog View");
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle("Blog View");
+        mProgressBar = (ProgressBar) view.findViewById(R.id.blog_loading_progress);
+        mCoverImageView = (ImageView) view.findViewById(R.id.blog_cover);
+        mNameTextView = (TextView) view.findViewById(R.id.name_text_full);
+        mLastUpdateTextView = (TextView) view.findViewById(R.id.last_update_full);
+        mTitleTextView = (TextView) view.findViewById(R.id.blog_title_full);
+        mBlogDescription = (TextView) view.findViewById(R.id.blog_description);
+        mTotalCommentsTextView = (TextView) view.findViewById(R.id.total_comments_full);
     }
 
     private void getPostFromServer(int id, final View view) {
@@ -142,7 +141,7 @@ public class BlogViewFragment extends Fragment {
         setLayoutVisibility(View.VISIBLE);
         try {
             mTotalCommentsTextView.setText(String.valueOf(postResponse.getComments().size()));
-            LoadImageFromWebOperations(mCoverImageView, postResponse.getCoverPhoto());
+            WebOperations.loadImage(getActivity(),mCoverImageView, postResponse.getCoverPhoto());
             mNameTextView.setText(postResponse.getCreatorInfo().getName());
             mLastUpdateTextView.setText(postResponse.getLastChange());
             mTitleTextView.setText(postResponse.getTitle());
@@ -156,21 +155,6 @@ public class BlogViewFragment extends Fragment {
 
     }
 
-    public void LoadImageFromWebOperations(final ImageView imageView, final String url) {
-
-        Glide.with(getActivity()).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                imageView.setImageResource(R.drawable.wait);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                return false;
-            }
-        }).into(imageView);
-    }
 
     private void setUpCommentsList(List<CommentsItem> comments, final View view) {
         CommentsAdapter commentsAdapter = new CommentsAdapter((AppCompatActivity) getActivity(), comments);
