@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import com.example.noushad.blogbee.adapter.CommentsAdapter;
 import com.example.noushad.blogbee.model.singlePostResponseModel.CommentsItem;
 import com.example.noushad.blogbee.model.singlePostResponseModel.SinglePostResponse;
 import com.example.noushad.blogbee.utils.WebOperations;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class BlogViewFragment extends Fragment {
     private View mView;
     private int mPostId;
     private ProgressBar mProgressBar;
+    private Button mCommentButton;
 
     public static BlogViewFragment newInstance(int index) {
         Bundle bundle = new Bundle();
@@ -85,6 +87,7 @@ public class BlogViewFragment extends Fragment {
         mService = ServiceGenerator.createService(ApiInterface.class);
         mPostId = (int) getArguments().getSerializable(ARG_POST_ID);
         getPostFromServer(mPostId, view);
+
         return view;
     }
 
@@ -100,6 +103,7 @@ public class BlogViewFragment extends Fragment {
         mTitleTextView = (TextView) view.findViewById(R.id.blog_title_full);
         mBlogDescription = (TextView) view.findViewById(R.id.blog_description);
         mTotalCommentsTextView = (TextView) view.findViewById(R.id.total_comments_full);
+        mCommentButton = (Button) view.findViewById(R.id.comment_button);
     }
 
     private void getPostFromServer(int id, final View view) {
@@ -141,7 +145,7 @@ public class BlogViewFragment extends Fragment {
         setLayoutVisibility(View.VISIBLE);
         try {
             mTotalCommentsTextView.setText(String.valueOf(postResponse.getComments().size()));
-            WebOperations.loadImage(getActivity(),mCoverImageView, postResponse.getCoverPhoto());
+            WebOperations.loadImage(getActivity(), mCoverImageView, postResponse.getCoverPhoto());
             mNameTextView.setText(postResponse.getCreatorInfo().getName());
             mLastUpdateTextView.setText(postResponse.getLastChange());
             mTitleTextView.setText(postResponse.getTitle());
@@ -158,7 +162,9 @@ public class BlogViewFragment extends Fragment {
 
     private void setUpCommentsList(List<CommentsItem> comments, final View view) {
         CommentsAdapter commentsAdapter = new CommentsAdapter((AppCompatActivity) getActivity(), comments);
-        ListView listView = (ListView) view.findViewById(R.id.comments_list);
-        listView.setAdapter(commentsAdapter);
+        ExpandableHeightListView expandableListView = (ExpandableHeightListView) view.findViewById(R.id.comments_list);
+        expandableListView.setAdapter(commentsAdapter);
+        expandableListView.setExpanded(true);
     }
+
 }

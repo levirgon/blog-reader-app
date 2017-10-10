@@ -1,5 +1,6 @@
 package com.example.noushad.blogbee.Interface;
 
+import com.example.noushad.blogbee.model.CommentSuccessResponse;
 import com.example.noushad.blogbee.model.CreatorInfo;
 import com.example.noushad.blogbee.model.allPostsResponseModel.AllpostsResponse;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
@@ -46,10 +47,11 @@ public interface ApiInterface {
             @Path("index") int index);
 
 
-
     @GET("userinfo")
     Call<CreatorInfo> GetLoggedInUserData(
             @Header("Authorization") String authorization);
 
+    @POST("posts/{post_index}/comments")
+    Call<CommentSuccessResponse> postComment(@Header("Authorization") String authorization, @Field("description") String comment);
 
 }
