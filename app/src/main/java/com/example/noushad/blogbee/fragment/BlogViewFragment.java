@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,8 +21,10 @@ import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
 import com.example.noushad.blogbee.adapter.CommentsAdapter;
+import com.example.noushad.blogbee.model.CommentSuccessResponse;
 import com.example.noushad.blogbee.model.singlePostResponseModel.CommentsItem;
 import com.example.noushad.blogbee.model.singlePostResponseModel.SinglePostResponse;
+import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.example.noushad.blogbee.utils.WebOperations;
 import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 
@@ -39,8 +42,9 @@ import retrofit2.Response;
 public class BlogViewFragment extends Fragment {
 
     private static final String ARG_POST_ID = "post_id";
+    private static final int UPDATE_ALL = 1;
+    private static final int UPDATE_COMMENTS = 2;
 
-    private ApiInterface mService;
     private ImageView mCoverImageView;
     private TextView mNameTextView;
     private TextView mLastUpdateTextView;
@@ -51,6 +55,9 @@ public class BlogViewFragment extends Fragment {
     private int mPostId;
     private ProgressBar mProgressBar;
     private Button mCommentButton;
+    private EditText mCommentBox;
+    private ApiInterface mService;
+    private SinglePostResponse mPostResponse;
 
     public static BlogViewFragment newInstance(int index) {
         Bundle bundle = new Bundle();
@@ -65,6 +72,7 @@ public class BlogViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.blog_view, container, false);
         mView = view;
+        mService = ServiceGenerator.createService(ApiInterface.class);
         initializeViews(view);
         final FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +94,7 @@ public class BlogViewFragment extends Fragment {
         });
         mService = ServiceGenerator.createService(ApiInterface.class);
         mPostId = (int) getArguments().getSerializable(ARG_POST_ID);
-        getPostFromServer(mPostId, view);
-
+        getPostFromServer(mPostId, UPDATE_ALL);
         return view;
     }
 
@@ -104,9 +111,44 @@ public class BlogViewFragment extends Fragment {
         mBlogDescription = (TextView) view.findViewById(R.id.blog_description);
         mTotalCommentsTextView = (TextView) view.findViewById(R.id.total_comments_full);
         mCommentButton = (Button) view.findViewById(R.id.comment_button);
+        mCommentBox = (EditText) view.findViewById(R.id.comment_box);
+        mCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = mCommentBox.getText().toString();
+                if (!text.isEmpty()) {
+                    postComment(text);
+                } else {
+                    Toast.makeText(getActivity(), "Cannot post empty comment", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
-    private void getPostFromServer(int id, final View view) {
+    private void postComment(String text) {
+
+        Call<CommentSuccessResponse> responseCall = mService.postComment(mPostResponse.getId(), SharedPrefManager.getInstance(getActivity()).getAuthToken(), text);
+        responseCall.enqueue(new Callback<CommentSuccessResponse>() {
+            @Override
+            public void onResponse(Call<CommentSuccessResponse> call, Response<CommentSuccessResponse> response) {
+                if (response.isSuccessful()) {
+                    mCommentBox.setText("");
+                    getPostFromServer(mPostId, UPDATE_COMMENTS);
+
+                } else {
+                    Toast.makeText(getActivity(), "Error Posting Comment", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentSuccessResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getPostFromServer(int id, final int command) {
         setLayoutVisibility(View.INVISIBLE);
         Call<SinglePostResponse> singlePostResponse = mService.getSpecifiedPost(id);
 
@@ -116,8 +158,13 @@ public class BlogViewFragment extends Fragment {
                 mProgressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     try {
-                        SinglePostResponse postResponse = response.body();
-                        updateUI(view, postResponse);
+                        mPostResponse = response.body();
+                        setLayoutVisibility(View.VISIBLE);
+                        if (command == UPDATE_COMMENTS)
+                            setUpCommentsList(mPostResponse.getComments());
+                        else
+                            updateUI();
+
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
@@ -141,16 +188,16 @@ public class BlogViewFragment extends Fragment {
         mCoverImageView.setVisibility(command);
     }
 
-    private void updateUI(View view, SinglePostResponse postResponse) {
-        setLayoutVisibility(View.VISIBLE);
+    private void updateUI() {
+        Toast.makeText(getActivity(), "UI refreshed", Toast.LENGTH_LONG).show();
         try {
-            mTotalCommentsTextView.setText(String.valueOf(postResponse.getComments().size()));
-            WebOperations.loadImage(getActivity(), mCoverImageView, postResponse.getCoverPhoto());
-            mNameTextView.setText(postResponse.getCreatorInfo().getName());
-            mLastUpdateTextView.setText(postResponse.getLastChange());
-            mTitleTextView.setText(postResponse.getTitle());
-            mBlogDescription.setText(postResponse.getDetails());
-            setUpCommentsList(postResponse.getComments(), view);
+            mTotalCommentsTextView.setText(String.valueOf(mPostResponse.getComments().size()));
+            WebOperations.loadImage(getActivity(), mCoverImageView, mPostResponse.getCoverPhoto());
+            mNameTextView.setText(mPostResponse.getCreatorInfo().getName());
+            mLastUpdateTextView.setText(mPostResponse.getLastChange());
+            mTitleTextView.setText(mPostResponse.getTitle());
+            mBlogDescription.setText(mPostResponse.getDetails());
+            setUpCommentsList(mPostResponse.getComments());
 
         } catch (Exception e) {
             setLayoutVisibility(View.GONE);
@@ -160,9 +207,10 @@ public class BlogViewFragment extends Fragment {
     }
 
 
-    private void setUpCommentsList(List<CommentsItem> comments, final View view) {
+    private void setUpCommentsList(List<CommentsItem> comments) {
+        Toast.makeText(getActivity(),"comments refreshed!", Toast.LENGTH_LONG).show();
         CommentsAdapter commentsAdapter = new CommentsAdapter((AppCompatActivity) getActivity(), comments);
-        ExpandableHeightListView expandableListView = (ExpandableHeightListView) view.findViewById(R.id.comments_list);
+        ExpandableHeightListView expandableListView = (ExpandableHeightListView) mView.findViewById(R.id.comments_list);
         expandableListView.setAdapter(commentsAdapter);
         expandableListView.setExpanded(true);
     }

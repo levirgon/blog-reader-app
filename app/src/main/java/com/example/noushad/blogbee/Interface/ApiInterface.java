@@ -51,7 +51,8 @@ public interface ApiInterface {
     Call<CreatorInfo> GetLoggedInUserData(
             @Header("Authorization") String authorization);
 
-    @POST("posts/{post_index}/comments")
-    Call<CommentSuccessResponse> postComment(@Header("Authorization") String authorization, @Field("description") String comment);
+    @FormUrlEncoded
+    @POST("posts/{index}/comments")
+    Call<CommentSuccessResponse> postComment(@Path("index") int index, @Header("Authorization") String authorization, @Field("description") String comment);
 
 }
