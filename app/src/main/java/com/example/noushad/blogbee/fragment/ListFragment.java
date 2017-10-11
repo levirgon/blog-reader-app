@@ -24,7 +24,6 @@ import com.example.noushad.blogbee.model.allPostsResponseModel.DataItem;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.PaginationScrollListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,19 +37,15 @@ import retrofit2.Response;
 public class ListFragment extends Fragment implements PaginationAdapterCallback {
 
 
-    ArrayList<DataItem> mDataItems;
     OnItemSelectedInterface mListener;
     RecyclerView mRecyclerView;
     private ApiInterface mService;
     private BlogRecycleAdapter mAdapter;
-
     private boolean isLoading = false;
     private boolean isLastPage = false;
-
     private int TOTAL_PAGES = 20; // just a initial dummy value
     private int mCurrentPage = 1;
     LinearLayoutManager linearLayoutManager;
-
     ProgressBar progressBar;
     LinearLayout errorLayout;
     Button btnRetry;
@@ -63,7 +58,6 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     }
 
     public interface OnItemSelectedInterface {
-
         void onListBlogSelected(int index);
     }
 
@@ -74,9 +68,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         getActivity().setTitle("News Feed");
-
         View view = initializeViews(inflater, container);
         return view;
     }
@@ -198,9 +190,10 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
                     else isLastPage = true;
                 }
             }
+
             @Override
             public void onFailure(Call<AllpostsResponse> call, Throwable t) {
-                mAdapter.showRetry(true,t.getMessage());
+                mAdapter.showRetry(true, t.getMessage());
             }
         });
     }

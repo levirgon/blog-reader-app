@@ -1,5 +1,6 @@
 package com.example.noushad.blogbee.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -58,6 +59,7 @@ public class BlogViewFragment extends Fragment {
     private EditText mCommentBox;
     private ApiInterface mService;
     private SinglePostResponse mPostResponse;
+    private ProgressDialog progressDialog;
 
     public static BlogViewFragment newInstance(int index) {
         Bundle bundle = new Bundle();
@@ -103,6 +105,7 @@ public class BlogViewFragment extends Fragment {
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("Blog View");
+        progressDialog = new ProgressDialog(getActivity());
         mProgressBar = (ProgressBar) view.findViewById(R.id.blog_loading_progress);
         mCoverImageView = (ImageView) view.findViewById(R.id.blog_cover);
         mNameTextView = (TextView) view.findViewById(R.id.name_text_full);
@@ -128,10 +131,13 @@ public class BlogViewFragment extends Fragment {
 
     private void postComment(String text) {
 
+        progressDialog.setMessage("Getting User Information...");
+        progressDialog.show();
         Call<CommentSuccessResponse> responseCall = mService.postComment(mPostResponse.getId(), SharedPrefManager.getInstance(getActivity()).getAuthToken(), text);
         responseCall.enqueue(new Callback<CommentSuccessResponse>() {
             @Override
             public void onResponse(Call<CommentSuccessResponse> call, Response<CommentSuccessResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     mCommentBox.setText("");
                     getPostFromServer(mPostId, UPDATE_COMMENTS);
@@ -143,6 +149,7 @@ public class BlogViewFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CommentSuccessResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -189,7 +196,6 @@ public class BlogViewFragment extends Fragment {
     }
 
     private void updateUI() {
-        Toast.makeText(getActivity(), "UI refreshed", Toast.LENGTH_LONG).show();
         try {
             mTotalCommentsTextView.setText(String.valueOf(mPostResponse.getComments().size()));
             WebOperations.loadImage(getActivity(), mCoverImageView, mPostResponse.getCoverPhoto());
@@ -208,7 +214,6 @@ public class BlogViewFragment extends Fragment {
 
 
     private void setUpCommentsList(List<CommentsItem> comments) {
-        Toast.makeText(getActivity(),"comments refreshed!", Toast.LENGTH_LONG).show();
         CommentsAdapter commentsAdapter = new CommentsAdapter((AppCompatActivity) getActivity(), comments);
         ExpandableHeightListView expandableListView = (ExpandableHeightListView) mView.findViewById(R.id.comments_list);
         expandableListView.setAdapter(commentsAdapter);

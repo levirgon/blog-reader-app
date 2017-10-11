@@ -1,5 +1,6 @@
 package com.example.noushad.blogbee.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -35,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
     private ApiInterface mService;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (getInformation()) {
 
-
                     CountDownTimer countDownTimer = new CountDownTimer(1000, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -63,10 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onFinish() {
 
                             Toast.makeText(RegisterActivity.this, " Login using correct details ", Toast.LENGTH_SHORT).show();
-
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
-
                         }
                     }.start();
 
@@ -85,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordEditText = (EditText) findViewById(R.id.account_password);
         mConfirmPasswordEditText = (EditText) findViewById(R.id.account_confirm_password);
         mRegisterButton = (Button) findViewById(R.id.register_button);
+        mProgressDialog = new ProgressDialog(this);
     }
 
     private boolean getInformation() {
@@ -92,10 +92,8 @@ public class RegisterActivity extends AppCompatActivity {
         String name = "";
         String email = "";
         String phone = "";
-
         String password = mPasswordEditText.getText().toString();
         String confirmPassword = mConfirmPasswordEditText.getText().toString();
-
         name = mNameEditText.getText().toString();
         email = mEmailEditText.getText().toString();
         phone = mPhoneEditText.getText().toString();
@@ -103,44 +101,35 @@ public class RegisterActivity extends AppCompatActivity {
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
 
             Toast.makeText(this, "No Fields can be empty!! ", Toast.LENGTH_SHORT).show();
-
         } else if (!password.equals(confirmPassword) && (!password.isEmpty() || !confirmPassword.isEmpty())) {
-
 
             Toast.makeText(this, "Passwords Do not match", Toast.LENGTH_SHORT).show();
 
-
         } else {
-
-
-            return addToDatabase(name, email, password, phone, confirmPassword);
-
+            return registerUser(name, email, password, phone, confirmPassword);
         }
-
         return false;
     }
 
-    private boolean addToDatabase(String name, String email, String password, String phone, String confirmPassword) {
+    private boolean registerUser(String name, String email, String password, String phone, String confirmPassword) {
 
-        //
+        mProgressDialog.setMessage("Registering User...");
+        mProgressDialog.show();
+
         Call<RegResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
 
         registerResponseCall.enqueue(new Callback<RegResponse>() {
             @Override
             public void onResponse(Call<RegResponse> call, Response<RegResponse> response) {
-
+                mProgressDialog.dismiss();
                 RegResponse registerResponse = response.body();
                 if (response.isSuccessful()) {
-
                     String email = registerResponse.getEmail();
                     Toast.makeText(RegisterActivity.this, email + " has been registered, \n please check email to verify account ", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
 
                 } else {
-
-                    //i have been trying to make it a generic method but the from json method has been creating problems when i pass a generic class to it
-
                     Gson gson = new GsonBuilder().create();
                     RegError pojo;
                     try {
@@ -150,19 +139,15 @@ public class RegisterActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
-
                 }
-
             }
 
             @Override
             public void onFailure(Call<RegResponse> call, Throwable t) {
-
+                mProgressDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-
         return false;
     }
 

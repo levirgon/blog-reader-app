@@ -3,6 +3,7 @@ package com.example.noushad.blogbee.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView mCreateAccountTextView;
     private String mEmail;
     private String mPassword;
+    private TextInputLayout emailInputLayout;
+    private TextInputLayout passwordInputLayout;
     private ApiInterface mService;
     ProgressDialog progressDialog;
 
@@ -55,8 +58,21 @@ public class LoginActivity extends AppCompatActivity {
 
                 //check for valid email and password
                 if (mEmail.isEmpty() || mPassword.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Please Fill up All Required fields", Toast.LENGTH_SHORT).show();
+                    if (mEmail.isEmpty()) {
+                        emailInputLayout.setErrorEnabled(true);
+                        emailInputLayout.setError("Email cannot be empty");
+                    } else {
+                        emailInputLayout.setErrorEnabled(false);
+                    }
+                    if (mPassword.isEmpty()) {
+                        passwordInputLayout.setErrorEnabled(true);
+                        passwordInputLayout.setError("Password cannot be empty");
+                    } else {
+                        passwordInputLayout.setErrorEnabled(false);
+                    }
                 } else {
+                    passwordInputLayout.setErrorEnabled(false);
+                    emailInputLayout.setErrorEnabled(false);
                     userLogin(mEmail, mPassword);
                 }
             }
@@ -75,8 +91,12 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeViews() {
         progressDialog = new ProgressDialog(this);
         mService = ServiceGenerator.createService(ApiInterface.class);
-        mEmailEditText = (EditText) findViewById(R.id.email_entry);
-        mPasswordEditText = (EditText) findViewById(R.id.password_entry);
+//        mEmailEditText = (EditText) findViewById(R.id.email_entry);
+//        mPasswordEditText = (EditText) findViewById(R.id.password_entry);
+        emailInputLayout = (TextInputLayout) findViewById(R.id.emailTextInputLayout);
+        passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordTextInputLayout);
+        mEmailEditText = (EditText) findViewById(R.id.email_input);
+        mPasswordEditText = (EditText) findViewById(R.id.password_input);
         mLoginButton = (Button) findViewById(R.id.login_button);
         mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
     }
@@ -163,9 +183,9 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-
                 }
             }
+
             @Override
             public void onFailure(Call<CreatorInfo> call, Throwable t) {
                 progressDialog.dismiss();

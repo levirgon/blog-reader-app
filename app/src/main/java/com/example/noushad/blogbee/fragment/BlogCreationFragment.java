@@ -33,11 +33,8 @@ public class BlogCreationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         getActivity().setTitle("Create Blog");
-
         View view = inflater.inflate(R.layout.create_blog, container, false);
-
         coverImage = (ImageView) view.findViewById(R.id.blogCoverImage);
-
         ImageButton uploadButton = (ImageButton) view.findViewById(R.id.imageUploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,25 +42,18 @@ public class BlogCreationFragment extends Fragment {
 
                 Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 getIntent.setType("image/*");
-
                 Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickIntent.setType("image/*");
-
                 Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-
                 startActivityForResult(chooserIntent, PICK_IMAGE);
             }
         });
-
-
         return view;
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             Uri imageUri = data.getData();
             String filePath = getPath(imageUri);
@@ -75,6 +65,7 @@ public class BlogCreationFragment extends Fragment {
     private String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(uri,projection,null,null,null);
+        assert cursor != null;
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
@@ -83,9 +74,7 @@ public class BlogCreationFragment extends Fragment {
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-
         if (requestCode == PICK_IMAGE) {
-            //get the selected image...
             Uri imageUri = intent.getData();
         }
     }

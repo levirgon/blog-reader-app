@@ -28,4 +28,5 @@
     <string name="_5_minutes_ago">5 minutes Ago</string>
     <string name="last_updated_full">Last Updated</string>
     <string name="blog_cover_image">blog cover image</string>
+    <string name="password_hint">PASSWORD</string>
 </resources>
