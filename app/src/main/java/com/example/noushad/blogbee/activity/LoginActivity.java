@@ -23,6 +23,7 @@ import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import java.io.IOException;
 
@@ -91,14 +92,16 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeViews() {
         progressDialog = new ProgressDialog(this);
         mService = ServiceGenerator.createService(ApiInterface.class);
-//        mEmailEditText = (EditText) findViewById(R.id.email_entry);
-//        mPasswordEditText = (EditText) findViewById(R.id.password_entry);
+
         emailInputLayout = (TextInputLayout) findViewById(R.id.emailTextInputLayout);
         passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordTextInputLayout);
         mEmailEditText = (EditText) findViewById(R.id.email_input);
+
         mPasswordEditText = (EditText) findViewById(R.id.password_input);
         mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setTypeface(EasyFonts.caviarDreams(this));
         mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
+        mCreateAccountTextView.setTypeface(EasyFonts.caviarDreamsBold(this));
     }
 
     private void userLogin(String email, String password) {
@@ -169,7 +172,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     CreatorInfo others = response.body();
                     SharedPrefManager.getInstance(getApplicationContext()).userOwnDataUpdate(others);
-                    Toast.makeText(getApplicationContext(), "login successfully", Toast.LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), FragmentContainerActivity.class));
                 } else {
