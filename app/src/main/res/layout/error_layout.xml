@@ -15,9 +15,11 @@
 
         <TextView
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sorry couldn't fetch Blogs"
+            android:text="sorry couldn't fetch Blog's"
+            android:padding="8dp"
+            android:layout_gravity="center"
             android:textAlignment="center"
             tools:ignore="HardcodedText"/>
 

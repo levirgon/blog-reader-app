@@ -29,4 +29,7 @@
     <string name="last_updated_full">Last Updated</string>
     <string name="blog_cover_image">blog cover image</string>
     <string name="password_hint">PASSWORD</string>
+    <string name="category_label">Category</string>
+    <string name="categories_descrition">Categories...</string>
+    <string name="email_label">E-MAIL</string>
 </resources>

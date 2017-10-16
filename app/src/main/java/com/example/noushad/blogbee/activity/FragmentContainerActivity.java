@@ -83,9 +83,11 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
         if (user.getCoverPhoto() != null && hasValidPath(user.getCoverPhoto())) {
+
             WebOperations.loadImage(this, mNavUserProfileImage, user.getCoverPhoto());
         } else {
             mNavUserProfileImage.setImageResource(R.drawable.no_profile_image);
+
         }
         mNavUserProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

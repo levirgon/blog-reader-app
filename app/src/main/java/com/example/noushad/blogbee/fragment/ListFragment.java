@@ -128,7 +128,7 @@ public class ListFragment extends Fragment implements PaginationAdapterCallback 
             errorLayout.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
-            txtError.setText(throwable.getMessage());
+            txtError.setText("Error in Connection!");
         }
     }
 
