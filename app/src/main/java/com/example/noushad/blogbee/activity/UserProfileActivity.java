@@ -9,6 +9,7 @@ import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.example.noushad.blogbee.utils.WebOperations;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +40,7 @@ public class UserProfileActivity extends AppCompatActivity {
         }
 
         mNameTv.setText(user.getName());
+        mNameTv.setTypeface(EasyFonts.caviarDreamsBold(this));
 
     }
 

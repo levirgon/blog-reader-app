@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,6 +64,7 @@ public class BlogViewFragment extends Fragment {
     private PostDetails mPostResponse;
     private ProgressDialog progressDialog;
     private CircleImageView profileImage;
+    private ImageButton reportButton;
 
     public static BlogViewFragment newInstance(int index) {
         Bundle bundle = new Bundle();
@@ -130,6 +132,14 @@ public class BlogViewFragment extends Fragment {
                 }
             }
         });
+        reportButton = (ImageButton) view.findViewById(R.id.reportButton);
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportButton.setImageResource(R.drawable.ic_post_reported);
+            }
+        });
 
     }
 
@@ -173,7 +183,7 @@ public class BlogViewFragment extends Fragment {
                     try {
 
                         mPostResponse = response.body();
-                        Log.d(TAG, "onResponse: " + response.body().toString());
+                       // Log.d(TAG, "onResponse: " + response.body().toString());
                         setLayoutVisibility(View.VISIBLE);
                         if (command == UPDATE_COMMENTS)
                             setUpCommentsList(mPostResponse.getComments());
@@ -181,7 +191,7 @@ public class BlogViewFragment extends Fragment {
                             updateUI();
 
                     } catch (Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onResponse: "+e.getMessage());
                     }
                 }
             }
@@ -207,7 +217,8 @@ public class BlogViewFragment extends Fragment {
         try {
             mTotalCommentsTextView.setText(String.valueOf(mPostResponse.getComments().size()));
             WebOperations.loadImage(getActivity(), mCoverImageView, mPostResponse.getMediumCover());
-            WebOperations.loadImage(getActivity(), profileImage, mPostResponse.getCreatorInfo().getSmallCover());
+            if (WebOperations.hasValidPath(mPostResponse.getCreatorInfo().getSmallCover()))
+                WebOperations.loadImage(getActivity(), profileImage, mPostResponse.getCreatorInfo().getSmallCover());
             mNameTextView.setText(mPostResponse.getCreatorInfo().getName());
             mLastUpdateTextView.setText(mPostResponse.getLastChange());
             mTitleTextView.setText(mPostResponse.getTitle());
@@ -216,7 +227,8 @@ public class BlogViewFragment extends Fragment {
 
         } catch (Exception e) {
             setLayoutVisibility(View.GONE);
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+           // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.d(TAG, "updateUI: "+e.getMessage());
         }
 
     }

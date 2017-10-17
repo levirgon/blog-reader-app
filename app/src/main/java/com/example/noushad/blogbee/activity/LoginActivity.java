@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         mService = ServiceGenerator.createService(ApiInterface.class);
 
-        emailInputLayout = (TextInputLayout) findViewById(R.id.emailTextInputLayout);
+        emailInputLayout = (TextInputLayout) findViewById(R.id.textInputLayout);
         passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordTextInputLayout);
         mEmailEditText = (EditText) findViewById(R.id.email_input);
 

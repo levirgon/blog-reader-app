@@ -55,7 +55,7 @@ public class CommentsAdapter extends ArrayAdapter<CommentsItem> {
 
         ImageView commentImage = (ImageView) listItemView.findViewById(R.id.comment_profile_image);
         Glide.with(commentImage.getContext())
-                .load(currentComment.getCreatorInfo().getCoverPhoto())
+                .load(currentComment.getCreatorInfo().getSmallCover())
                 .fitCenter()
                 .into(commentImage);
         return listItemView;

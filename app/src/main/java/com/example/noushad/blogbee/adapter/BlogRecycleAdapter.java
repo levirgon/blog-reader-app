@@ -118,6 +118,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
         private TextView mNameTextView;
         private TextView mTitleTextView;
 
+
         public BlogVH(View itemView) {
             super(itemView);
             mCommentCountTextView = (TextView) itemView.findViewById(R.id.total_comments);
@@ -126,6 +127,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             mNameTextView = (TextView) itemView.findViewById(R.id.name_text);
             mLastUpdatedTextView = (TextView) itemView.findViewById(R.id.last_update);
             mTitleTextView = (TextView) itemView.findViewById(R.id.blog_title);
+
             itemView.setOnClickListener(this);
         }
 
@@ -134,7 +136,8 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             mLastUpdatedTextView.setText(mDataItem.getLastChange());
             WebOperations.loadImage(parentContext, mCoverImage, mDataItem.getCoverPhoto());
             if (mDataItem.hasCreatorInfo()) {
-                WebOperations.loadImage(parentContext, mProfileImage, (mDataItem.getUserInfo()).getCoverPhoto());
+                if (WebOperations.hasValidPath(mDataItem.getUserInfo().getCoverPhoto()))
+                    WebOperations.loadImage(parentContext, mProfileImage, mDataItem.getUserInfo().getCoverPhoto());
                 mNameTextView.setText((mDataItem.getUserInfo()).getName());
             }
             mTitleTextView.setText(mDataItem.getTitle());

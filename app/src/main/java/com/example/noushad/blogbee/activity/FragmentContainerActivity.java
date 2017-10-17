@@ -32,6 +32,7 @@ import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.example.noushad.blogbee.utils.WebOperations;
+import com.vstechlab.easyfonts.EasyFonts;
 
 
 public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface, PaginationAdapterCallback {
@@ -82,11 +83,11 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         mNavUserProfileImage = (ImageView) view.findViewById(R.id.nav_header_profile_image);
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
+        userName.setTypeface(EasyFonts.caviarDreamsBold(this));
         if (user.getCoverPhoto() != null && WebOperations.hasValidPath(user.getCoverPhoto())) {
             WebOperations.loadImage(this, mNavUserProfileImage, user.getCoverPhoto());
         } else {
             mNavUserProfileImage.setImageResource(R.drawable.no_profile_image);
-
         }
         mNavUserProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
