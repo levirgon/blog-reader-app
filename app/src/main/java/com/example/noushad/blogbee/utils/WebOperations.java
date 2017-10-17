@@ -39,16 +39,17 @@ public class WebOperations {
         Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+
                 return false;
             }
 
             @Override
             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
                 return false;
             }
         }).into(imageView);
     }
-
 
 
     public static boolean createPost(final Context context, String authToken, String title, String description, String filePath) {
@@ -79,6 +80,7 @@ public class WebOperations {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<CPSuccessResponse> call, Throwable t) {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();

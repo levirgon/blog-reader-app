@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +24,15 @@ import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
 import com.example.noushad.blogbee.adapter.CommentsAdapter;
 import com.example.noushad.blogbee.model.CommentSuccessResponse;
-import com.example.noushad.blogbee.model.singlePostResponseModel.CommentsItem;
-import com.example.noushad.blogbee.model.singlePostResponseModel.SinglePostResponse;
+import com.example.noushad.blogbee.model.singlePostResponse.CommentsItem;
+import com.example.noushad.blogbee.model.singlePostResponse.PostDetails;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.example.noushad.blogbee.utils.WebOperations;
 import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,8 +60,9 @@ public class BlogViewFragment extends Fragment {
     private Button mCommentButton;
     private EditText mCommentBox;
     private ApiInterface mService;
-    private SinglePostResponse mPostResponse;
+    private PostDetails mPostResponse;
     private ProgressDialog progressDialog;
+    private CircleImageView profileImage;
 
     public static BlogViewFragment newInstance(int index) {
         Bundle bundle = new Bundle();
@@ -106,6 +109,7 @@ public class BlogViewFragment extends Fragment {
                 (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("Blog View");
         progressDialog = new ProgressDialog(getActivity());
+        profileImage = (CircleImageView) view.findViewById(R.id.creatorProfileImage);
         mProgressBar = (ProgressBar) view.findViewById(R.id.blog_loading_progress);
         mCoverImageView = (ImageView) view.findViewById(R.id.blog_cover);
         mNameTextView = (TextView) view.findViewById(R.id.name_text_full);
@@ -155,17 +159,21 @@ public class BlogViewFragment extends Fragment {
         });
     }
 
+    private static final String TAG = "BlogViewFragment";
+
     private void getPostFromServer(int id, final int command) {
         setLayoutVisibility(View.INVISIBLE);
-        Call<SinglePostResponse> singlePostResponse = mService.getSpecifiedPost(id);
+        Call<PostDetails> singlePostResponse = mService.getSpecifiedPost(id);
 
-        singlePostResponse.enqueue(new Callback<SinglePostResponse>() {
+        singlePostResponse.enqueue(new Callback<PostDetails>() {
             @Override
-            public void onResponse(Call<SinglePostResponse> call, Response<SinglePostResponse> response) {
+            public void onResponse(Call<PostDetails> call, Response<PostDetails> response) {
                 mProgressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     try {
+
                         mPostResponse = response.body();
+                        Log.d(TAG, "onResponse: " + response.body().toString());
                         setLayoutVisibility(View.VISIBLE);
                         if (command == UPDATE_COMMENTS)
                             setUpCommentsList(mPostResponse.getComments());
@@ -179,7 +187,7 @@ public class BlogViewFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<SinglePostResponse> call, Throwable t) {
+            public void onFailure(Call<PostDetails> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -198,7 +206,8 @@ public class BlogViewFragment extends Fragment {
     private void updateUI() {
         try {
             mTotalCommentsTextView.setText(String.valueOf(mPostResponse.getComments().size()));
-            WebOperations.loadImage(getActivity(), mCoverImageView, mPostResponse.getCoverPhoto());
+            WebOperations.loadImage(getActivity(), mCoverImageView, mPostResponse.getMediumCover());
+            WebOperations.loadImage(getActivity(), profileImage, mPostResponse.getCreatorInfo().getSmallCover());
             mNameTextView.setText(mPostResponse.getCreatorInfo().getName());
             mLastUpdateTextView.setText(mPostResponse.getLastChange());
             mTitleTextView.setText(mPostResponse.getTitle());

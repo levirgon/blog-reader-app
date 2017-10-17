@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.noushad.blogbee.R;
-import com.example.noushad.blogbee.model.singlePostResponseModel.CommentsItem;
+import com.example.noushad.blogbee.model.singlePostResponse.CommentsItem;
 
 import java.util.List;
 

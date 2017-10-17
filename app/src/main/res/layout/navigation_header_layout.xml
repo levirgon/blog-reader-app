@@ -27,7 +27,7 @@
         android:contentDescription=""/>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/navigation_header_profile_image"
+        android:id="@+id/nav_header_profile_image"
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:contentDescription="@string/cover_image"
@@ -48,23 +48,24 @@
         android:id="@+id/navigation_header_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/navigation_header"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
-        tools:layout_conversion_absoluteX="143dp"
-        tools:layout_conversion_absoluteY="210dp"
-        tools:layout_conversion_absoluteWidth="97dp"
-        tools:layout_conversion_absoluteHeight="29dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/navigation_header_profile_image"
-        android:layout_marginRight="0dp"
-        app:layout_constraintVertical_bias="0.333"
-        app:layout_constraintRight_toRightOf="@+id/navigation_header_profile_image"
         android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/navigation_header_profile_image"/>
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/navigation_header"
+        android:textAlignment="center"
+        android:textColor="@color/fbutton_color_concrete"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/nav_header_profile_image"
+        app:layout_constraintRight_toRightOf="@+id/nav_header_profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/nav_header_profile_image"
+        app:layout_constraintVertical_bias="0.333"
+        tools:layout_conversion_absoluteHeight="29dp"
+        tools:layout_conversion_absoluteWidth="97dp"
+        tools:layout_conversion_absoluteX="143dp"
+        tools:layout_conversion_absoluteY="210dp"/>
 
     <ImageButton
         android:id="@+id/dp_upload_button"
@@ -75,11 +76,11 @@
         android:layout_marginRight="0dp"
         android:background="@android:color/transparent"
         android:contentDescription=""
-        android:tint="@color/colorAccent"
+        android:tint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/navigation_header_user_name"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="@+id/navigation_header_profile_image"
-        app:layout_constraintRight_toRightOf="@+id/navigation_header_profile_image"
+        app:layout_constraintLeft_toLeftOf="@+id/nav_header_profile_image"
+        app:layout_constraintRight_toRightOf="@+id/nav_header_profile_image"
         app:srcCompat="@drawable/ic_image_upload"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,12 +1,13 @@
 package com.example.noushad.blogbee.model.allPostsResponseModel;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
 public class UserInfo {
 
-	@SerializedName("cover_photo")
+	@SerializedName("small_cover")
 	private String coverPhoto;
 
 	@SerializedName("isVerified")

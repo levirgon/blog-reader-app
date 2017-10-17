@@ -3,7 +3,7 @@ package com.example.noushad.blogbee.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.noushad.blogbee.model.CreatorInfo;
+import com.example.noushad.blogbee.model.ViewModel.UserDetails;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
 
@@ -20,7 +20,10 @@ public class SharedPrefManager {
     private static final String KEY_USER_ID = "keyuserid";
     private static final String KEY_USER_NAME = "keyusername";
     private static final String KEY_USER_EMAIL = "keyuseremail";
-    private static final String KEY_USER_PROFILE_PIC = "keyuseremail";
+    private static final String KEY_USER_PHONE = "keyuserphone";
+    private static final String KEY_USER_PROFILE_PIC_SMALL = "keyuserprofilepicsmall";
+    private static final String KEY_USER_PROFILE_PIC_MEDIUM = "keyuserprofilepicmedium";
+    private static final String KEY_USER_PROFILE_PIC_LARGE = "keyuserprofilepiclarge";
     private static final String KEY_USER_TOKEN_TYPE = "keyusertokentype";
     private static final String KEY_USER_ACCESS_TOKEN = "keyuseraccesstoken";
     private static final String KEY_USER_REFRESH_TOKEN = "keyuserrefreshtoken";
@@ -40,7 +43,6 @@ public class SharedPrefManager {
     public boolean userLoginDataUpdate(LogInSuccessResponse loginData) {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         editor.putString(KEY_USER_TOKEN_TYPE, loginData.getTokenType());
         editor.putString(KEY_USER_ACCESS_TOKEN, loginData.getAccessToken());
         editor.putString(KEY_USER_REFRESH_TOKEN, loginData.getRefreshToken());
@@ -49,13 +51,16 @@ public class SharedPrefManager {
         return true;
     }
 //
-    public boolean userOwnDataUpdate(CreatorInfo user) {
+    public boolean userOwnDataUpdate(UserDetails user) {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_USER_ID, user.getId());
         editor.putString(KEY_USER_NAME, user.getName());
         editor.putString(KEY_USER_EMAIL, user.getEmail());
-        editor.putString(KEY_USER_PROFILE_PIC, user.getCoverPhoto());
+        editor.putString(KEY_USER_PHONE, user.getPhoneNo());
+        editor.putString(KEY_USER_PROFILE_PIC_SMALL, user.getSmallCover());
+        editor.putString(KEY_USER_PROFILE_PIC_MEDIUM, user.getMediumCover());
+        editor.putString(KEY_USER_PROFILE_PIC_LARGE, user.getLargeCover());
         editor.apply();
         return true;
     }
@@ -84,8 +89,8 @@ public class SharedPrefManager {
                 sharedPreferences.getInt(KEY_USER_ID, 0),
                 sharedPreferences.getString(KEY_USER_NAME, null),
                 sharedPreferences.getString(KEY_USER_EMAIL, null),
-
-                sharedPreferences.getString(KEY_USER_PROFILE_PIC, null)
+                sharedPreferences.getString(KEY_USER_PHONE,null),
+                sharedPreferences.getString(KEY_USER_PROFILE_PIC_MEDIUM, null)
         );
     }
 //

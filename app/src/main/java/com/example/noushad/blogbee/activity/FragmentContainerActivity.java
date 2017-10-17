@@ -79,11 +79,10 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
     private void setUserCredentials(View view) {
         UserViewModel user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
-        mNavUserProfileImage = (ImageView) view.findViewById(R.id.navigation_header_profile_image);
+        mNavUserProfileImage = (ImageView) view.findViewById(R.id.nav_header_profile_image);
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
         if (user.getCoverPhoto() != null && hasValidPath(user.getCoverPhoto())) {
-
             WebOperations.loadImage(this, mNavUserProfileImage, user.getCoverPhoto());
         } else {
             mNavUserProfileImage.setImageResource(R.drawable.no_profile_image);
@@ -108,9 +107,11 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     }
 
     private boolean hasValidPath(String coverPhotoPath) {
-        if (coverPhotoPath.equals("https://everyone-journalist.tutexp.com/img/"))
-            return false;
+
+        if(coverPhotoPath.contains(".jpg"))
         return true;
+
+        return false;
     }
 
     @Override
@@ -194,6 +195,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
                 break;
             case R.id.my_account:
                 //account mangement activity;
+                startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.write_blog:
                 CURRENT_FRAGMENT_TAG = BLOG_CREATION_FRAGMENT;

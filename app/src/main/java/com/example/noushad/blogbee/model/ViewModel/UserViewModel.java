@@ -7,15 +7,17 @@ package com.example.noushad.blogbee.model.ViewModel;
 public class UserViewModel {
     private final Integer id;
     private final String name;
+    private final String phoneNo;
     private final String email;
     private final String coverPhoto;
 
 
-    public UserViewModel(Integer id, String name, String email, String coverPhoto) {
+    public UserViewModel(Integer id, String name, String email, String phone, String coverPhoto) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.coverPhoto = coverPhoto;
+        this.phoneNo = phone;
     }
 
     public Integer getId() {
@@ -32,5 +34,9 @@ public class UserViewModel {
 
     public String getCoverPhoto() {
         return coverPhoto;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
     }
 }

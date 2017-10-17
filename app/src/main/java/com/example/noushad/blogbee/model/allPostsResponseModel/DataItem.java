@@ -12,7 +12,7 @@ public class DataItem {
     @SerializedName("comment_count")
     private String commentCount;
 
-    @SerializedName("cover_photo")
+    @SerializedName("medium_cover")
     private String coverPhoto;
 
     @SerializedName("creator_info")

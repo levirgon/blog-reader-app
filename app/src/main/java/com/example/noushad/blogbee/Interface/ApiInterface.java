@@ -2,11 +2,11 @@ package com.example.noushad.blogbee.Interface;
 
 import com.example.noushad.blogbee.model.CPResponseModel.CPSuccessResponse;
 import com.example.noushad.blogbee.model.CommentSuccessResponse;
-import com.example.noushad.blogbee.model.CreatorInfo;
+import com.example.noushad.blogbee.model.ViewModel.UserDetails;
 import com.example.noushad.blogbee.model.allPostsResponseModel.AllpostsResponse;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
 import com.example.noushad.blogbee.model.registerResponseModel.RegResponse;
-import com.example.noushad.blogbee.model.singlePostResponseModel.SinglePostResponse;
+import com.example.noushad.blogbee.model.singlePostResponse.PostDetails;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -47,12 +47,12 @@ public interface ApiInterface {
             @Query("page") int pageIndex);
 
     @GET("posts/{index}")
-    Call<SinglePostResponse> getSpecifiedPost(
+    Call<PostDetails> getSpecifiedPost(
             @Path("index") int index);
 
 
     @GET("userinfo")
-    Call<CreatorInfo> GetLoggedInUserData(
+    Call<UserDetails> GetLoggedInUserData(
             @Header("Authorization") String authorization);
 
     @FormUrlEncoded

@@ -15,9 +15,9 @@ import android.widget.Toast;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
-import com.example.noushad.blogbee.model.CreatorInfo;
 import com.example.noushad.blogbee.model.SimpleError;
 import com.example.noushad.blogbee.model.ValidationError.ValidationError;
+import com.example.noushad.blogbee.model.ViewModel.UserDetails;
 import com.example.noushad.blogbee.model.loginResponseModel.LogInSuccessResponse;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.google.gson.Gson;
@@ -156,22 +156,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private static final String TAG = "LoginActivity";
     private void setLoggedInUserInformation() {
 
         progressDialog.setMessage("Getting User Information...");
         progressDialog.show();
 
         //building retrofit object
-        Call<CreatorInfo> responseCall = mService.GetLoggedInUserData(SharedPrefManager.getInstance(this).getAuthToken());
+        Call<UserDetails> responseCall = mService.GetLoggedInUserData(SharedPrefManager.getInstance(this).getAuthToken());
 
-        responseCall.enqueue(new Callback<CreatorInfo>() {
+        responseCall.enqueue(new Callback<UserDetails>() {
             @Override
-            public void onResponse(Call<CreatorInfo> call, Response<CreatorInfo> response) {
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
+                    UserDetails user = response.body();
 
-                    CreatorInfo others = response.body();
-                    SharedPrefManager.getInstance(getApplicationContext()).userOwnDataUpdate(others);
+                    SharedPrefManager.getInstance(getApplicationContext()).userOwnDataUpdate(user);
                     finish();
                     startActivity(new Intent(getApplicationContext(), FragmentContainerActivity.class));
                 } else {
@@ -189,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CreatorInfo> call, Throwable t) {
+            public void onFailure(Call<UserDetails> call, Throwable t) {
                 progressDialog.dismiss();
             }
         });
