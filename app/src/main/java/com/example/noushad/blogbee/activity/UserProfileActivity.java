@@ -32,10 +32,12 @@ public class UserProfileActivity extends AppCompatActivity {
         mTvEmail.setText(user.getEmail());
         mTvPhone.setText(user.getPhoneNo());
         String userPictureUrl = user.getCoverPhoto();
-        WebOperations.loadImage(this, mProfileImage, userPictureUrl);
-        if (WebOperations.isImageLoadFailed()){
+        if (WebOperations.hasValidPath(userPictureUrl))
+            WebOperations.loadImage(this, mProfileImage, userPictureUrl);
+        else {
             Glide.with(this).load(R.drawable.no_profile_image).into(mProfileImage);
         }
+
         mNameTv.setText(user.getName());
 
     }

@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/cover"
         android:layout_width="0dp"
-        android:layout_height="140dp"
+        android:layout_height="160dp"
         android:scaleType="center"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -51,7 +51,13 @@ public class WebOperations {
         }).into(imageView);
     }
 
+    public static boolean hasValidPath(String coverPhotoPath) {
 
+        if(coverPhotoPath.contains(".jpg"))
+            return true;
+
+        return false;
+    }
     public static boolean createPost(final Context context, String authToken, String title, String description, String filePath) {
         final boolean[] status = new boolean[1];
         File file = new File(filePath);

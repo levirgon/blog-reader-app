@@ -82,7 +82,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         mNavUserProfileImage = (ImageView) view.findViewById(R.id.nav_header_profile_image);
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
-        if (user.getCoverPhoto() != null && hasValidPath(user.getCoverPhoto())) {
+        if (user.getCoverPhoto() != null && WebOperations.hasValidPath(user.getCoverPhoto())) {
             WebOperations.loadImage(this, mNavUserProfileImage, user.getCoverPhoto());
         } else {
             mNavUserProfileImage.setImageResource(R.drawable.no_profile_image);
@@ -93,7 +93,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
             public void onClick(View v) {
                 Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 getIntent.setType("image/*");
-
                 Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickIntent.setType("image/*");
 
@@ -106,13 +105,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
     }
 
-    private boolean hasValidPath(String coverPhotoPath) {
 
-        if(coverPhotoPath.contains(".jpg"))
-        return true;
-
-        return false;
-    }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
