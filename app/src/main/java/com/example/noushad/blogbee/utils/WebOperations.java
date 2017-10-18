@@ -1,6 +1,8 @@
 package com.example.noushad.blogbee.utils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -11,6 +13,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
+import com.example.noushad.blogbee.activity.FragmentContainerActivity;
 import com.example.noushad.blogbee.model.CPResponseModel.CPSuccessResponse;
 import com.example.noushad.blogbee.model.CPResponseModel.Error;
 import com.example.noushad.blogbee.model.ViewModel.UserDetails;
@@ -34,6 +37,7 @@ import retrofit2.Response;
 
 public class WebOperations {
     private static ApiInterface mService = ServiceGenerator.createService(ApiInterface.class);
+
 
     public static void loadImage(final Context context, final ImageView imageView, final String url) {
 
@@ -60,9 +64,12 @@ public class WebOperations {
         return false;
     }
 
-    public static boolean createPost(final Context context, String authToken, String title, String description, String filePath) {
-        final boolean[] status = new boolean[1];
+    public static void createPost(final Context context, String authToken, String title, String description, String filePath) {
+
         File file = new File(filePath);
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Posting...");
+        progressDialog.show();
         RequestBody requestFile = RequestBody.create(MediaType.parse("image"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("cover_image", file.getName(), requestFile);
 
@@ -71,10 +78,12 @@ public class WebOperations {
         responseCall.enqueue(new Callback<CPSuccessResponse>() {
             @Override
             public void onResponse(Call<CPSuccessResponse> call, Response<CPSuccessResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     CPSuccessResponse successResponse = response.body();
                     Toast.makeText(context, "Post Created Successfully", Toast.LENGTH_SHORT).show();
-                    status[0] = true;
+
+                    context.startActivity(new Intent(context, FragmentContainerActivity.class));
                 } else {
                     Gson gson = new GsonBuilder().create();
                     Error pojo;
@@ -91,11 +100,12 @@ public class WebOperations {
 
             @Override
             public void onFailure(Call<CPSuccessResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
-        return status[0];
+
     }
 
     public static void updateUserInformation(final Context context, final String key, String value) {

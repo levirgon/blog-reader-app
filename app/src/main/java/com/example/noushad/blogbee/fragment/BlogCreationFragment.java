@@ -72,76 +72,73 @@ public class BlogCreationFragment extends Fragment {
         mCoverUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isStoragePermissionGranted()) {
-                    Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                    getIntent.setType("image/*");
-                    Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    pickIntent.setType("image/*");
-                    Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-                    startActivityForResult(chooserIntent, PICK_IMAGE);
-                }
+                showImageChooser();
             }
         });
         mCategoriesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                mBuilder.setTitle("Categories");
-                mBuilder.setMultiChoiceItems(categoriesList, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int itemIndex, boolean isChecked) {
-                        if (isChecked) {
-                            selectedCategories.add(itemIndex);
-                        } else {
-                            selectedCategories.remove(selectedCategories.indexOf(itemIndex));
-                        }
-                    }
-                });
-                mBuilder.setCancelable(false);
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String items = "";
-                        for (int i = 0; i < selectedCategories.size(); i++) {
-                            items += categoriesList[selectedCategories.get(i)];
-                            if (i != selectedCategories.size() - 1) {
-                                items += ", ";
-                            }
-                        }
-                        mSelectedCategoriesText.setText(items);
-                    }
-                });
-                mBuilder.setNegativeButton("DISMISS", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                mBuilder.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        cleanCategories();
-                    }
-                });
-
-                AlertDialog alertDialog = mBuilder.create();
-                alertDialog.show();
-
+                showCategoryDialog();
             }
         });
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!faultsFound()) {
-                    if (WebOperations.createPost(getActivity(), SharedPrefManager.getInstance(getActivity())
-                            .getAuthToken(), titleText.getText().toString(), descriptionEditText.getText().toString(), mFilePath)) {
-                    cleanViews();
-                    }
+                    WebOperations.createPost(getActivity(), SharedPrefManager.getInstance(getActivity())
+                            .getAuthToken(), titleText.getText().toString(), descriptionEditText.getText().toString(), mFilePath);
+
+
                 }
             }
         });
     }
+
+    private void showCategoryDialog() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+        mBuilder.setTitle("Categories");
+        mBuilder.setMultiChoiceItems(categoriesList, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int itemIndex, boolean isChecked) {
+                if (isChecked) {
+                    selectedCategories.add(itemIndex);
+                } else {
+                    selectedCategories.remove(selectedCategories.indexOf(itemIndex));
+                }
+            }
+        });
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String items = "";
+                for (int i = 0; i < selectedCategories.size(); i++) {
+                    items += categoriesList[selectedCategories.get(i)];
+                    if (i != selectedCategories.size() - 1) {
+                        items += ", ";
+                    }
+                }
+                mSelectedCategoriesText.setText(items);
+            }
+        });
+        mBuilder.setNegativeButton("DISMISS", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        mBuilder.setNeutralButton("CLEAR ALL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                cleanCategories();
+            }
+        });
+
+        AlertDialog alertDialog = mBuilder.create();
+        alertDialog.show();
+    }
+
+
 
     private void cleanCategories() {
         for (int i = 0; i < checkedItems.length; i++)
@@ -184,13 +181,28 @@ public class BlogCreationFragment extends Fragment {
     }
 
     //code for getting image from storage...
+    private void showImageChooser() {
+        if (isStoragePermissionGranted()) {
+            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            getIntent.setType("image/*");
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickIntent.setType("image/*");
+            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
+            startActivityForResult(chooserIntent, PICK_IMAGE);
+        }
+    }
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if ((checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) && (checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) && (checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED)) {
                 return true;
             } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
+                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 1);
+
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation

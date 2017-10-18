@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.noushad.blogbee.R;
@@ -117,8 +118,13 @@ public class UserProfileActivity extends AppCompatActivity {
     private void displayData() {
         UserViewModel user = SharedPrefManager.getInstance(this).getUser();
         mTvName.setText(user.getName());
+        Toast.makeText(getApplicationContext(),user.getName(),Toast.LENGTH_SHORT).show();
         mTvEmail.setText(user.getEmail());
+        Toast.makeText(getApplicationContext(),user.getEmail(),Toast.LENGTH_SHORT).show();
+
         mTvPhone.setText(user.getPhoneNo());
+        Toast.makeText(getApplicationContext(),user.getPhoneNo(),Toast.LENGTH_SHORT).show();
+
         String userPictureUrl = user.getCoverPhoto();
         if (WebOperations.hasValidPath(userPictureUrl))
             WebOperations.loadImage(this, mProfileImage, userPictureUrl);

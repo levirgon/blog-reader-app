@@ -36,5 +36,5 @@
     <string name="edit">EDIT</string>
     <string name="phone">Phone</string>
     <string name="hide_password">*******</string>
-    <string name="email_hint"> EMAIL or Mobile Number</string>
+    <string name="email_hint"> EMAIL or MOBILE NUMBER</string>
 </resources>
