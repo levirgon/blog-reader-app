@@ -47,6 +47,14 @@ public interface ApiInterface {
     Call<AllpostsResponse> getPostsByPage(
             @Query("page") int pageIndex);
 
+
+    @GET("users/{user}/posts")
+    Call<AllpostsResponse> getOwnPostsByPage(
+            @Path("user") int user_id,
+            @Header("Authorization") String authorization,
+            @Query("page") int pageIndex
+            );
+
     @FormUrlEncoded
     @PUT("users/{id}")
     Call<UserDetails> updateUserName(

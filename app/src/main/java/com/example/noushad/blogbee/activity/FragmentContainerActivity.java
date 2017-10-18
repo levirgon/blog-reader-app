@@ -28,6 +28,7 @@ import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.fragment.BlogCreationFragment;
 import com.example.noushad.blogbee.fragment.BlogViewFragment;
 import com.example.noushad.blogbee.fragment.ListFragment;
+import com.example.noushad.blogbee.fragment.MyOwnPostFragment;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
@@ -35,7 +36,7 @@ import com.example.noushad.blogbee.utils.WebOperations;
 import com.vstechlab.easyfonts.EasyFonts;
 
 
-public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface, PaginationAdapterCallback {
+public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface,MyOwnPostFragment.OnItemSelectedInterface, PaginationAdapterCallback {
 
     private static final int PICK_IMAGE = 1;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -46,6 +47,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     public static final String BLOG_VIEW_FRAGMENT = "blog_view_fragment";
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String RETRIEVE_FRAGMENT = "retrieve fragment";
+    public static final String MY_OWN_POST_FRAGMENT = "own post fragment";
     public String CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
     private ImageView mNavUserProfileImage;
 
@@ -195,6 +197,9 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
                 startFragment(new BlogCreationFragment(), REPLACE);
                 break;
             case R.id.my_posts:
+                CURRENT_FRAGMENT_TAG = MY_OWN_POST_FRAGMENT;
+                startFragment(new MyOwnPostFragment(), REPLACE);
+                break;
             case R.id.favourites:
             case R.id.bookmarks:
             case R.id.settings:

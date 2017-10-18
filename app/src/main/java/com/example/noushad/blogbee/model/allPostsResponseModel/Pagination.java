@@ -15,8 +15,8 @@ public class Pagination{
 	@SerializedName("count")
 	private int count;
 
-	@SerializedName("links")
-	private Links links;
+	//@SerializedName("links")
+//	private Links links;
 
 	@SerializedName("total_pages")
 	private int totalPages;
@@ -36,9 +36,9 @@ public class Pagination{
 		return count;
 	}
 
-	public Links getLinks(){
-		return links;
-	}
+//	public Links getLinks(){
+//		return links;
+//	}
 
 	public int getTotalPages(){
 		return totalPages;
@@ -55,7 +55,7 @@ public class Pagination{
 			"per_page = '" + perPage + '\'' + 
 			",total = '" + total + '\'' + 
 			",count = '" + count + '\'' + 
-			",links = '" + links + '\'' + 
+		//	",links = '" + links + '\'' +
 			",total_pages = '" + totalPages + '\'' + 
 			",current_page = '" + currentPage + '\'' + 
 			"}";
