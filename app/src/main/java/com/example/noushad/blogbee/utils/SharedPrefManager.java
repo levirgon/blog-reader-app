@@ -40,7 +40,6 @@ public class SharedPrefManager {
         return mInstance;
     }
 
-    //
     public boolean userLoginDataUpdate(LogInSuccessResponse loginData) {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -67,8 +66,6 @@ public class SharedPrefManager {
         return true;
     }
 
-    //
-//
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         if (sharedPreferences.getString(KEY_USER_ACCESS_TOKEN, null) != null)
@@ -104,7 +101,6 @@ public class SharedPrefManager {
         );
     }
 
-    //
     public boolean logout() {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

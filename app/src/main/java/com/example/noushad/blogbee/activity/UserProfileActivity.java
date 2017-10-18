@@ -2,6 +2,7 @@ package com.example.noushad.blogbee.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private CardView emailCard;
     private CardView phoneCard;
     private CardView passwordCard;
+    private FloatingActionButton reloadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +42,10 @@ public class UserProfileActivity extends AppCompatActivity {
         initializeViews();
 
         displayData();
-        setUpCardClickListeners();
+        setUpClickListeners();
     }
 
-    private void setUpCardClickListeners() {
+    private void setUpClickListeners() {
         nameCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,20 @@ public class UserProfileActivity extends AppCompatActivity {
                 showChangeDialog("password");
             }
         });
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//image pick
+            }
+        });
+
+        reloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(getIntent());
+            }
+        });
     }
 
     private void showChangeDialog(final String key) {
@@ -84,7 +100,8 @@ public class UserProfileActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = newInfoEdit.getText().toString();
-                WebOperations.updateUserInformation(getApplicationContext(), key, value);
+                if (!value.equals(""))
+                    WebOperations.updateUserInformation(getApplicationContext(), key, value);
 
             }
         });
@@ -122,6 +139,7 @@ public class UserProfileActivity extends AppCompatActivity {
         phoneCard = (CardView) findViewById(R.id.phoneEditCard);
         nameCard = (CardView) findViewById(R.id.nameEditCard);
         passwordCard = (CardView) findViewById(R.id.passwordEditCard);
+        reloadButton = (FloatingActionButton) findViewById(R.id.profileReloadButton);
 
     }
 
