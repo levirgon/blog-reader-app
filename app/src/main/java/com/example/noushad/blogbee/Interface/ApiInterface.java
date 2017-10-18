@@ -16,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -46,6 +47,32 @@ public interface ApiInterface {
     Call<AllpostsResponse> getPostsByPage(
             @Query("page") int pageIndex);
 
+    @FormUrlEncoded
+    @PUT("users/{id}")
+    Call<UserDetails> updateUserName(
+            @Path("id") int id, @Header("Authorization")
+            String authorization, @Field("name") String value);
+
+    @FormUrlEncoded
+    @PUT("users/{id}")
+    Call<UserDetails> updateUserEmail(
+            @Path("id") int id, @Header("Authorization")
+            String authorization, @Field("email") String value);
+
+    @FormUrlEncoded
+    @PUT("users/{id}")
+    Call<UserDetails> updateUserPhone(
+            @Path("id") int id, @Header("Authorization")
+            String authorization, @Field("phone_no") String value);
+
+    @FormUrlEncoded
+    @PUT("users/{id}")
+    Call<UserDetails> updateUserPassword(
+            @Path("id") int id, @Header("Authorization")
+            String authorization, @Field("password") String value,
+            @Field("password_confirmation") String passwordConfirm);
+
+
     @GET("posts/{index}")
     Call<PostDetails> getSpecifiedPost(
             @Path("index") int index);
@@ -60,12 +87,12 @@ public interface ApiInterface {
     Call<CommentSuccessResponse> postComment(@Path("index") int index, @Header("Authorization")
             String authorization, @Field("description") String comment);
 
-
     @Multipart
     @POST("posts")
     Call<CPSuccessResponse> createPost(@Header("Authorization") String authorization,
                                        @Part("title") String title,
                                        @Part("description") String description,
                                        @Part MultipartBody.Part file);
+
 
 }

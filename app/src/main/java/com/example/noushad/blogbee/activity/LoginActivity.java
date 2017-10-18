@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mEmail = mEmailEditText.getText().toString();
                 mPassword = mPasswordEditText.getText().toString();
 
@@ -113,14 +114,11 @@ public class LoginActivity extends AppCompatActivity {
         responseCall.enqueue(new Callback<LogInSuccessResponse>() {
             @Override
             public void onResponse(Call<LogInSuccessResponse> call, Response<LogInSuccessResponse> response) {
-
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-
                     LogInSuccessResponse aInformation = response.body();
                     SharedPrefManager.getInstance(getApplicationContext()).userLoginDataUpdate(aInformation);
                     setLoggedInUserInformation();
-
                 } else if (response.code() == 422) {
                     JsonParser parser = new JsonParser();
                     JsonElement mJson = null;
@@ -157,12 +155,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private static final String TAG = "LoginActivity";
+
     private void setLoggedInUserInformation() {
 
         progressDialog.setMessage("Getting User Information...");
         progressDialog.show();
 
-        //building retrofit object
         Call<UserDetails> responseCall = mService.GetLoggedInUserData(SharedPrefManager.getInstance(this).getAuthToken());
 
         responseCall.enqueue(new Callback<UserDetails>() {

@@ -39,7 +39,8 @@ public class SharedPrefManager {
         }
         return mInstance;
     }
-//
+
+    //
     public boolean userLoginDataUpdate(LogInSuccessResponse loginData) {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -50,8 +51,9 @@ public class SharedPrefManager {
         editor.apply();
         return true;
     }
-//
+
     public boolean userOwnDataUpdate(UserDetails user) {
+
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_USER_ID, user.getId());
@@ -64,7 +66,8 @@ public class SharedPrefManager {
         editor.apply();
         return true;
     }
-//
+
+    //
 //
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -73,13 +76,20 @@ public class SharedPrefManager {
         return false;
     }
 
-    public String getAuthToken(){
+    public String getAuthToken() {
 
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String info = sharedPreferences.getString(KEY_USER_TOKEN_TYPE, null)
-                +" "+ sharedPreferences.getString(KEY_USER_ACCESS_TOKEN, null);
+                + " " + sharedPreferences.getString(KEY_USER_ACCESS_TOKEN, null);
         System.out.println(info);
         return info;
+    }
+
+    public int getUserId() {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt(KEY_USER_ID, 0);
+        return userId;
+
     }
 
     public UserViewModel getUser() {
@@ -89,11 +99,12 @@ public class SharedPrefManager {
                 sharedPreferences.getInt(KEY_USER_ID, 0),
                 sharedPreferences.getString(KEY_USER_NAME, null),
                 sharedPreferences.getString(KEY_USER_EMAIL, null),
-                sharedPreferences.getString(KEY_USER_PHONE,null),
+                sharedPreferences.getString(KEY_USER_PHONE, null),
                 sharedPreferences.getString(KEY_USER_PROFILE_PIC_MEDIUM, null)
         );
     }
-//
+
+    //
     public boolean logout() {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

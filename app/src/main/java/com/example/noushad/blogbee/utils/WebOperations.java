@@ -13,6 +13,7 @@ import com.example.noushad.blogbee.Interface.ApiInterface;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
 import com.example.noushad.blogbee.model.CPResponseModel.CPSuccessResponse;
 import com.example.noushad.blogbee.model.CPResponseModel.Error;
+import com.example.noushad.blogbee.model.ViewModel.UserDetails;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,11 +54,12 @@ public class WebOperations {
 
     public static boolean hasValidPath(String coverPhotoPath) {
 
-        if(coverPhotoPath.contains(".jpg"))
+        if (coverPhotoPath.contains(".jpg"))
             return true;
 
         return false;
     }
+
     public static boolean createPost(final Context context, String authToken, String title, String description, String filePath) {
         final boolean[] status = new boolean[1];
         File file = new File(filePath);
@@ -94,5 +96,42 @@ public class WebOperations {
         });
 
         return status[0];
+    }
+
+    public static void updateUserInformation(final Context context, final String key, String value) {
+        Call<UserDetails> responseCall = null;
+
+        if (key.equals("name")) {
+            responseCall = mService.updateUserName(SharedPrefManager.
+                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value);
+        } else if (key.equals("email")) {
+            responseCall = mService.updateUserEmail(SharedPrefManager.
+                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value);
+        } else if (key.equals("phone_no")) {
+            responseCall = mService.updateUserPhone(SharedPrefManager.
+                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value);
+        } else if (key.equals("password")) {
+            responseCall = mService.updateUserPassword(SharedPrefManager.
+                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value, value);
+        }
+
+        assert responseCall != null;
+        responseCall.enqueue(new Callback<UserDetails>() {
+            @Override
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
+                if (response.isSuccessful()) {
+                    UserDetails user = response.body();
+                    Toast.makeText(context, key.toUpperCase() + " Updated Successfully", Toast.LENGTH_SHORT).show();
+                    SharedPrefManager.getInstance(context).userOwnDataUpdate(user);
+                } else {
+                    Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetails> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

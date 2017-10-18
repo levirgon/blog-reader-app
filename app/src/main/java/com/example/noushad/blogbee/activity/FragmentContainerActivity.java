@@ -84,6 +84,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
         userName.setTypeface(EasyFonts.caviarDreamsBold(this));
+
         if (user.getCoverPhoto() != null && WebOperations.hasValidPath(user.getCoverPhoto())) {
             WebOperations.loadImage(this, mNavUserProfileImage, user.getCoverPhoto());
         } else {
@@ -105,7 +106,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         });
 
     }
-
 
 
     @Override
@@ -188,7 +188,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
                 startFragment(new ListFragment(), REPLACE);
                 break;
             case R.id.my_account:
-                //account mangement activity;
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.write_blog:
@@ -203,11 +202,11 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
                 Toast.makeText(getApplicationContext(), "Logging Out...", Toast.LENGTH_SHORT).show();
                 logout();
                 break;
-
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private void logout() {
         SharedPrefManager.getInstance(this).logout();
