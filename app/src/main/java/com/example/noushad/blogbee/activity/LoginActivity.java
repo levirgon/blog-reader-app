@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mPasswordEditText = (EditText) findViewById(R.id.password_input);
         mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setTypeface(EasyFonts.caviarDreams(this));
+        mLoginButton.setTypeface(EasyFonts.caviarDreamsBold(this));
         mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
         mCreateAccountTextView.setTypeface(EasyFonts.caviarDreamsBold(this));
     }

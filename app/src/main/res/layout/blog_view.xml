@@ -138,6 +138,17 @@
                         app:layout_constraintTop_toBottomOf="@+id/last_update_full"
                         tools:ignore="HardcodedText"/>
 
+                    <ImageButton
+                        android:id="@+id/reportButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/cardview_light_background"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/blog_description"
+                        app:srcCompat="@drawable/ic_report_post"/>
+
                     <TextView
                         android:id="@+id/total_comments_full"
                         android:layout_width="wrap_content"
@@ -164,7 +175,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/comment_button"
                         tools:text="Your Comment Here ..."
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="24dp"
                         app:layout_constraintTop_toBottomOf="@+id/reportButton"/>
 
                     <Button
@@ -212,17 +223,6 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/blog_title_full"
                         tools:ignore="HardcodedText,UnusedAttribute"/>
-
-                    <ImageButton
-                        android:id="@+id/reportButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/cardview_light_background"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/blog_description"
-                        app:srcCompat="@drawable/ic_report_post"/>
 
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
