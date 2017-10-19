@@ -13,14 +13,9 @@
     <string name="cover_image">cover image</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="confirm_password">Confirm Password</string>
     <string name="e_mail">E-Mail</string>
     <string name="name">Name</string>
-    <string name="password">Password</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="register">Register</string>
     <string name="home">Home</string>
-    <string name="app_title">Blog Bee</string>
     <string name="create_new_account">Create New Account</string>
     <string name="login">Login</string>
     <string name="description">Description</string>
@@ -31,9 +26,7 @@
     <string name="password_hint">PASSWORD</string>
     <string name="category_label">Category</string>
     <string name="categories_descrition">Categories...</string>
-    <string name="email_label">E-MAIL</string>
     <string name="textview">TextView</string>
-    <string name="edit">EDIT</string>
     <string name="phone">Phone</string>
     <string name="hide_password">*******</string>
     <string name="email_hint"> EMAIL or MOBILE NUMBER</string>

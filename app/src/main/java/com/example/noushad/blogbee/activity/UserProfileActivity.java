@@ -1,6 +1,7 @@
 package com.example.noushad.blogbee.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -16,9 +17,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
+import com.example.noushad.blogbee.utils.ImageUtils;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.example.noushad.blogbee.utils.WebOperations;
 import com.vstechlab.easyfonts.EasyFonts;
+
+import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,6 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private CardView phoneCard;
     private CardView passwordCard;
     private FloatingActionButton reloadButton;
+    private File mFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +79,25 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//image pick
+                pickImage();
+
             }
         });
 
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                startActivity(getIntent());
+                reloadActivity();
             }
         });
     }
+
+    private void reloadActivity() {
+        finish();
+        startActivity(getIntent());
+    }
+
+    private static final int PICK_IMAGE = 1;
 
     private void showChangeDialog(final String key) {
 
@@ -102,7 +114,7 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = newInfoEdit.getText().toString();
                 if (!value.equals(""))
-                    WebOperations.updateUserInformation(getApplicationContext(), key, value);
+                    WebOperations.updateUserInformation(UserProfileActivity.this, key, value);
 
             }
         });
@@ -118,14 +130,11 @@ public class UserProfileActivity extends AppCompatActivity {
     private void displayData() {
         UserViewModel user = SharedPrefManager.getInstance(this).getUser();
         mTvName.setText(user.getName());
-        Toast.makeText(getApplicationContext(),user.getName(),Toast.LENGTH_SHORT).show();
         mTvEmail.setText(user.getEmail());
-        Toast.makeText(getApplicationContext(),user.getEmail(),Toast.LENGTH_SHORT).show();
-
         mTvPhone.setText(user.getPhoneNo());
-        Toast.makeText(getApplicationContext(),user.getPhoneNo(),Toast.LENGTH_SHORT).show();
 
         String userPictureUrl = user.getCoverPhoto();
+        Toast.makeText(getApplicationContext(),user.getCoverPhoto(),Toast.LENGTH_SHORT).show();
         if (WebOperations.hasValidPath(userPictureUrl))
             WebOperations.loadImage(this, mProfileImage, userPictureUrl);
         else {
@@ -148,6 +157,21 @@ public class UserProfileActivity extends AppCompatActivity {
         reloadButton = (FloatingActionButton) findViewById(R.id.profileReloadButton);
 
     }
+
+    public void pickImage() {
+        Intent chooserIntent = ImageUtils.getChooserIntent();
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mFile = ImageUtils.getImageFile(this,data.getData(),mProfileImage);
+            WebOperations.updateUserPhoto(UserProfileActivity.this,"PROFILE PICTURE",mFile);
+        }
+    }
+
 
 
 }

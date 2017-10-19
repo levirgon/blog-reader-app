@@ -2,7 +2,6 @@ package com.example.noushad.blogbee.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import com.example.noushad.blogbee.model.ViewModel.UserDetails;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
@@ -60,8 +59,6 @@ public class SharedPrefManager {
         editor.putString(KEY_USER_NAME, user.getName());
         editor.putString(KEY_USER_EMAIL, user.getEmail());
         editor.putString(KEY_USER_PHONE, user.getPhoneNo());
-        Toast.makeText(sContext,user.getPhoneNo(),Toast.LENGTH_SHORT).show();
-
         editor.putString(KEY_USER_PROFILE_PIC_SMALL, user.getSmallCover());
         editor.putString(KEY_USER_PROFILE_PIC_MEDIUM, user.getMediumCover());
         editor.putString(KEY_USER_PROFILE_PIC_LARGE, user.getLargeCover());

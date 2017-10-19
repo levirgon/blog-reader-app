@@ -61,6 +61,12 @@ public interface ApiInterface {
             @Path("id") int id, @Header("Authorization")
             String authorization, @Field("name") String value);
 
+    @Multipart
+    @POST("users/{id}/update_cover")
+    Call<UserDetails> updateUserPhoto(
+            @Path("id") int id, @Header("Authorization")
+            String authorization, @Part MultipartBody.Part file);
+
     @FormUrlEncoded
     @PUT("users/{id}")
     Call<UserDetails> updateUserEmail(

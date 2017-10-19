@@ -2,10 +2,7 @@ package com.example.noushad.blogbee.activity;
 
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -30,13 +27,16 @@ import com.example.noushad.blogbee.fragment.BlogViewFragment;
 import com.example.noushad.blogbee.fragment.ListFragment;
 import com.example.noushad.blogbee.fragment.MyOwnPostFragment;
 import com.example.noushad.blogbee.model.ViewModel.UserViewModel;
+import com.example.noushad.blogbee.utils.ImageUtils;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
 import com.example.noushad.blogbee.utils.WebOperations;
 import com.vstechlab.easyfonts.EasyFonts;
 
+import java.io.File;
 
-public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface,MyOwnPostFragment.OnItemSelectedInterface, PaginationAdapterCallback {
+
+public class FragmentContainerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnItemSelectedInterface, MyOwnPostFragment.OnItemSelectedInterface, PaginationAdapterCallback {
 
     private static final int PICK_IMAGE = 1;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -50,6 +50,7 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     public static final String MY_OWN_POST_FRAGMENT = "own post fragment";
     public String CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
     private ImageView mNavUserProfileImage;
+    private File mFile;
 
 
     @Override
@@ -95,53 +96,34 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         mNavUserProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                getIntent.setType("image/*");
-                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                pickIntent.setType("image/*");
-
-                Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-
+                Intent chooserIntent = ImageUtils.getChooserIntent();
                 startActivityForResult(chooserIntent, PICK_IMAGE);
             }
         });
 
     }
 
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        if (requestCode == PICK_IMAGE) {
-            //get the selected image...
-            Uri imageUri = intent.getData();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            Uri imageUri = data.getData();
-            String filePath = getPath(imageUri);
-            mNavUserProfileImage.setImageURI(imageUri);
+            mFile = ImageUtils.getImageFile(this, data.getData(), mNavUserProfileImage);
+            WebOperations.updateUserPhoto(FragmentContainerActivity.this,"PROFILE PICTURE",mFile);
+
         }
     }
 
-    private String getPath(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = this.getContentResolver().query(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+    private void reloadActivity() {
+        finish();
+        startActivity(getIntent());
     }
-
 
     @Override
     public void onBackPressed() {
+        reloadActivity();
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
+
         } else {
             super.onBackPressed();
         }
@@ -230,5 +212,11 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     @Override
     public void retryPageLoad() {
         //
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

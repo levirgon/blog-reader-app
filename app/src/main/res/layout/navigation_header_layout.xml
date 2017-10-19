@@ -68,7 +68,6 @@
         tools:layout_conversion_absoluteY="210dp"/>
 
     <ImageButton
-        android:id="@+id/dp_upload_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"

@@ -1,8 +1,10 @@
 package com.example.noushad.blogbee.utils;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -30,6 +33,8 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
  * Created by noushad on 10/9/17.
@@ -44,7 +49,7 @@ public class WebOperations {
         Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-
+                Toast.makeText(context, model, Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -64,15 +69,14 @@ public class WebOperations {
         return false;
     }
 
-    public static void createPost(final Context context, String authToken, String title, String description, String filePath) {
+    public static void createPost(final Context context, String authToken, String title, String description, File file) {
 
-        File file = new File(filePath);
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Posting...");
         progressDialog.show();
+
         RequestBody requestFile = RequestBody.create(MediaType.parse("image"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("cover_image", file.getName(), requestFile);
-
 
         Call<CPSuccessResponse> responseCall = mService.createPost(authToken, title, description, body);
         responseCall.enqueue(new Callback<CPSuccessResponse>() {
@@ -82,7 +86,6 @@ public class WebOperations {
                 if (response.isSuccessful()) {
                     CPSuccessResponse successResponse = response.body();
                     Toast.makeText(context, "Post Created Successfully", Toast.LENGTH_SHORT).show();
-
                     context.startActivity(new Intent(context, FragmentContainerActivity.class));
                 } else {
                     Gson gson = new GsonBuilder().create();
@@ -108,39 +111,83 @@ public class WebOperations {
 
     }
 
-    public static void updateUserInformation(final Context context, final String key, String value) {
+    public static void updateUserInformation(final Activity activity, final String key, String value) {
         Call<UserDetails> responseCall = null;
+        final ProgressDialog progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage("Updating " + key.toUpperCase() + "...");
+        progressDialog.show();
 
         if (key.equals("name")) {
             responseCall = mService.updateUserName(SharedPrefManager.
-                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value);
+                    getInstance(activity).getUserId(), SharedPrefManager.getInstance(activity).getAuthToken(), value);
         } else if (key.equals("email")) {
             responseCall = mService.updateUserEmail(SharedPrefManager.
-                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value);
+                    getInstance(activity).getUserId(), SharedPrefManager.getInstance(activity).getAuthToken(), value);
         } else if (key.equals("phone_no")) {
             responseCall = mService.updateUserPhone(SharedPrefManager.
-                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value);
+                    getInstance(activity).getUserId(), SharedPrefManager.getInstance(activity).getAuthToken(), value);
         } else if (key.equals("password")) {
             responseCall = mService.updateUserPassword(SharedPrefManager.
-                    getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), value, value);
+                    getInstance(activity).getUserId(), SharedPrefManager.getInstance(activity).getAuthToken(), value, value);
         }
 
         assert responseCall != null;
         responseCall.enqueue(new Callback<UserDetails>() {
             @Override
             public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     UserDetails user = response.body();
-                    Toast.makeText(context, key.toUpperCase() + " Updated Successfully", Toast.LENGTH_SHORT).show();
-                    SharedPrefManager.getInstance(context).userOwnDataUpdate(user);
+                    Toast.makeText(activity, key.toUpperCase() + " Updated Successfully", Toast.LENGTH_SHORT).show();
+                    SharedPrefManager.getInstance(activity).userOwnDataUpdate(user);
+
                 } else {
-                    Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Error Occurred", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserDetails> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(activity, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static void updateUserPhoto(final Activity context, final String key, File file) {
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Updating " + key.toUpperCase() + "...");
+        progressDialog.show();
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("cover_image", file.getName(), requestFile);
+        Call<UserDetails> call = mService.updateUserPhoto(SharedPrefManager.
+                getInstance(context).getUserId(), SharedPrefManager.getInstance(context).getAuthToken(), body);
+
+
+        call.enqueue(new Callback<UserDetails>() {
+            @Override
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    UserDetails user = response.body();
+                    Log.d(TAG, "COVER_UPLOAD_ERROR : " + response.body());
+                    Toast.makeText(context, key.toUpperCase() + " Updated Successfully", Toast.LENGTH_SHORT).show();
+                    SharedPrefManager.getInstance(context).userOwnDataUpdate(user);
+                } else {
+                    Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT).show();
+                    try {
+                        Log.d(TAG, "COVER_UPLOAD_ERROR : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetails> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
