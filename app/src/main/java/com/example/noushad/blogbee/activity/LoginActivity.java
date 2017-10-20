@@ -112,7 +112,8 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog.setMessage("Signing Up...");
         progressDialog.show();
-        Call<LogInSuccessResponse> responseCall = mService.userLogin(email, password);
+        String token = SharedPrefManager.getInstance(this).getDeviceToken();
+        Call<LogInSuccessResponse> responseCall = mService.userLogin(email, password,token);
 
         responseCall.enqueue(new Callback<LogInSuccessResponse>() {
             @Override

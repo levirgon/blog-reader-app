@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "790763550250",
+    "firebase_url": "https://everyone-journalist.firebaseio.com",
+    "project_id": "everyone-journalist",
+    "storage_bucket": "everyone-journalist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790763550250:android:06c90599fde318a0",
+        "android_client_info": {
+          "package_name": "com.example.noushad.blogbee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790763550250-0645mcaat5bc4frhj3v78u823i1aulu4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noushad.blogbee",
+            "certificate_hash": "fb32eb47cf787687490f4c613b8416ad920fd16b"
+          }
+        },
+        {
+          "client_id": "790763550250-594vbirpng8qv92hri34fiu240b25p6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaS_V5k6af38ZkFr1WWTkEJZYWj3dMCP8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790763550250-594vbirpng8qv92hri34fiu240b25p6c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

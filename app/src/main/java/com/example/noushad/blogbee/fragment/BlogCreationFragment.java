@@ -161,7 +161,7 @@ public class BlogCreationFragment extends Fragment {
         } else if (TextUtils.isEmpty(descriptionEditText.getText().toString())) {
             Toast.makeText(getActivity(), "Description cannot be empty", Toast.LENGTH_SHORT).show();
             return true;
-        } else if ( postLength < 60) {
+        } else if ( postLength < 20) {
             Toast.makeText(getActivity(), "Description must contain 60 characters or more,\n Your Post Currently Contains : "+postLength+" words.", Toast.LENGTH_SHORT).show();
             return true;
 

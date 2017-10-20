@@ -50,5 +50,7 @@ dependencies {
     compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.vstechlab.easyfonts:easyfonts:1.0.0'
     compile 'com.github.jkwiecien:EasyImage:2.0.3'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
     testCompile 'junit:junit:4.12'
 }
+apply plugin: 'com.google.gms.google-services'
