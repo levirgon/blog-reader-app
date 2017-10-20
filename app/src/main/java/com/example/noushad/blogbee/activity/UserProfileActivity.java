@@ -7,12 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.noushad.blogbee.R;
@@ -33,12 +31,9 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView mTvEmail;
     private TextView mTvPhone;
     private TextView mNameTv;
-    private CardView nameCard;
-    private CardView emailCard;
-    private CardView phoneCard;
-    private CardView passwordCard;
     private FloatingActionButton reloadButton;
     private File mFile;
+    private TextView mTvPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,25 +47,25 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setUpClickListeners() {
-        nameCard.setOnClickListener(new View.OnClickListener() {
+        mTvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showUpdateDialog("name");
             }
         });
-        emailCard.setOnClickListener(new View.OnClickListener() {
+        mTvEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showUpdateDialog("email");
             }
         });
-        phoneCard.setOnClickListener(new View.OnClickListener() {
+        mTvPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showUpdateDialog("phone_no");
             }
         });
-        passwordCard.setOnClickListener(new View.OnClickListener() {
+        mTvPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showUpdateDialog("password");
@@ -137,7 +132,6 @@ public class UserProfileActivity extends AppCompatActivity {
         mTvPhone.setTypeface(EasyFonts.caviarDreamsBold(this));
 
         String userPictureUrl = user.getCoverPhoto();
-        Toast.makeText(getApplicationContext(),user.getCoverPhoto(),Toast.LENGTH_SHORT).show();
         if (WebOperations.hasValidPath(userPictureUrl))
             WebOperations.loadImage(this, mProfileImage, userPictureUrl);
         else {
@@ -152,11 +146,9 @@ public class UserProfileActivity extends AppCompatActivity {
         mTvName = (TextView) findViewById(R.id.tvName);
         mTvEmail = (TextView) findViewById(R.id.tvEmail);
         mTvPhone = (TextView) findViewById(R.id.tvPhone);
+        mTvPassword = (TextView) findViewById(R.id.tvPassword);
         mNameTv = (TextView) findViewById(R.id.nameTextView);
-        emailCard = (CardView) findViewById(R.id.emailEditCard);
-        phoneCard = (CardView) findViewById(R.id.phoneEditCard);
-        nameCard = (CardView) findViewById(R.id.nameEditCard);
-        passwordCard = (CardView) findViewById(R.id.passwordEditCard);
+
         reloadButton = (FloatingActionButton) findViewById(R.id.profileReloadButton);
 
     }
