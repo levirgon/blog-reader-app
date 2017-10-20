@@ -85,7 +85,6 @@ public class BlogViewFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 floatingActionButton.setImageResource(R.drawable.ic_favorite_enabled);
                 Snackbar snackbar = Snackbar.make(view, "Blog Bookmarked", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
                     @Override
