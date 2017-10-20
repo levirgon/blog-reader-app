@@ -40,7 +40,8 @@ public interface ApiInterface {
     @POST("login")
     Call<LogInSuccessResponse> userLogin(
             @Field("username") String email,
-            @Field("password") String password
+            @Field("password") String password,
+            @Field("device_token") String token
     );
 
     @GET("posts")

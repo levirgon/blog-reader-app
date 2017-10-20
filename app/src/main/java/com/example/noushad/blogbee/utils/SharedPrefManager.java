@@ -28,6 +28,7 @@ public class SharedPrefManager {
     private static final String KEY_USER_ACCESS_TOKEN = "keyuseraccesstoken";
     private static final String KEY_USER_REFRESH_TOKEN = "keyuserrefreshtoken";
     private static final String KEY_USER_TOKEN_EXPIRE = "keyusertokenexpire";
+    private static final String TAG_TOKEN = "tagtoken";
 
     private SharedPrefManager(Context context) {
         sContext = context;
@@ -108,5 +109,23 @@ public class SharedPrefManager {
         editor.apply();
         editor.commit();
         return true;
+    }
+
+
+    // for firebase notification
+
+    //this method will save the device token to shared preferences
+    public boolean saveDeviceToken(String token){
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TAG_TOKEN, token);
+        editor.apply();
+        return true;
+    }
+
+    //this method will fetch the device token from shared preferences
+    public String getDeviceToken(){
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return  sharedPreferences.getString(TAG_TOKEN, null);
     }
 }
