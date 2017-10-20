@@ -53,7 +53,6 @@ public class SharedPrefManager {
     }
 
     public boolean userOwnDataUpdate(UserDetails user) {
-
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_USER_ID, user.getId());

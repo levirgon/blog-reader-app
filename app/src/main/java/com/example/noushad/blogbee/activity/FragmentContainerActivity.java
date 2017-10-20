@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,7 +88,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         TextView userName = (TextView) view.findViewById(R.id.navigation_header_user_name);
         userName.setText(user.getName());
         userName.setTypeface(EasyFonts.caviarDreamsBold(this));
-
         if (user.getCoverPhoto() != null && WebOperations.hasValidPath(user.getCoverPhoto())) {
             WebOperations.loadImage(this, mNavUserProfileImage, user.getCoverPhoto());
         } else {
@@ -100,7 +100,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
                 startActivityForResult(chooserIntent, PICK_IMAGE);
             }
         });
-
     }
 
     @Override
@@ -108,19 +107,13 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             mFile = ImageUtils.getImageFile(this, data.getData(), mNavUserProfileImage);
-            WebOperations.updateUserPhoto(FragmentContainerActivity.this,"PROFILE PICTURE",mFile);
-
+            WebOperations.updateUserPhoto(FragmentContainerActivity.this, "PROFILE PICTURE", mFile);
         }
-    }
-
-    private void reloadActivity() {
-        finish();
-        startActivity(getIntent());
     }
 
     @Override
     public void onBackPressed() {
-        reloadActivity();
+
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
 
@@ -137,7 +130,15 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
     private void setNavigationViewListner() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.blog_navigation);
         navigationView.setNavigationItemSelectedListener(this);
-        setUserCredentials(navigationView.getHeaderView(0));
+        final View view = navigationView.getHeaderView(0);
+        setUserCredentials(view);
+        ImageButton reloadUserButton = (ImageButton) view.findViewById(R.id.navReloadButton);
+        reloadUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setUserCredentials(view);
+            }
+        });
     }
 
     private void startFragment(Fragment fragment, int command) {
@@ -164,14 +165,13 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
-
             case R.id.home:
                 CURRENT_FRAGMENT_TAG = LIST_FRAGMENT;
                 startFragment(new ListFragment(), REPLACE);
                 break;
             case R.id.my_account:
+
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.write_blog:
@@ -194,7 +194,6 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
         return true;
     }
 
-
     private void logout() {
         SharedPrefManager.getInstance(this).logout();
         finish();
@@ -211,12 +210,10 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
 
     @Override
     public void retryPageLoad() {
-        //
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 }

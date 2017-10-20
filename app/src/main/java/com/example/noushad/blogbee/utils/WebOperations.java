@@ -49,7 +49,7 @@ public class WebOperations {
         Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                Toast.makeText(context, model, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onException: " + url);
                 return false;
             }
 
