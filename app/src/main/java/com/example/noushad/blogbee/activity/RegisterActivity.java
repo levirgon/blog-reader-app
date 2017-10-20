@@ -16,11 +16,19 @@ import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.Retrofit.ServiceGenerator;
 import com.example.noushad.blogbee.model.registerResponseModel.RegError;
 import com.example.noushad.blogbee.model.registerResponseModel.RegResponse;
+import com.example.noushad.blogbee.utils.ImageUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.json.JSONObject;
 
+import java.io.File;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPasswordEditText;
     private EditText mConfirmPasswordEditText;
     private Button mRegisterButton;
+    private CircleImageView mProfileImage;
+    private File mFile;
 
     private static final String TAG = "RegisterActivity";
     private ApiInterface mService;
@@ -84,7 +94,33 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordEditText = (EditText) findViewById(R.id.account_password);
         mConfirmPasswordEditText = (EditText) findViewById(R.id.account_confirm_password);
         mRegisterButton = (Button) findViewById(R.id.register_button);
+        mRegisterButton.setTypeface(EasyFonts.caviarDreamsBold(this));
+        mProfileImage = (CircleImageView) findViewById(R.id.register_profile_image);
+        mProfileImage.setImageResource(R.drawable.no_profile_image);
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickImage();
+            }
+        });
+
         mProgressDialog = new ProgressDialog(this);
+    }
+
+    private static final int PICK_IMAGE = 1;
+
+    public void pickImage() {
+        Intent chooserIntent = ImageUtils.getChooserIntent();
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mFile = ImageUtils.getImageFile(this, data.getData(), mProfileImage);
+
+        }
     }
 
     private boolean getInformation() {
@@ -106,16 +142,21 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Passwords Do not match", Toast.LENGTH_SHORT).show();
 
         } else {
-            return registerUser(name, email, password, phone, confirmPassword);
+            return registerUser(name, email, password, phone, confirmPassword, mFile);
         }
         return false;
     }
 
-    private boolean registerUser(String name, String email, String password, String phone, String confirmPassword) {
+    private boolean registerUser(String name, String email, String password, String phone, String confirmPassword, File file) {
 
-        mProgressDialog.setMessage("Registering User...");
+        mProgressDialog.setMessage("Signing Up...");
         mProgressDialog.show();
+        MultipartBody.Part body = null;
 
+        if (file != null) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image"), file);
+             body = MultipartBody.Part.createFormData("image_thumb", file.getName(), requestFile);
+        }
         Call<RegResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
 
         registerResponseCall.enqueue(new Callback<RegResponse>() {

@@ -55,25 +55,25 @@ public class UserProfileActivity extends AppCompatActivity {
         nameCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChangeDialog("name");
+                showUpdateDialog("name");
             }
         });
         emailCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChangeDialog("email");
+                showUpdateDialog("email");
             }
         });
         phoneCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChangeDialog("phone_no");
+                showUpdateDialog("phone_no");
             }
         });
         passwordCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChangeDialog("password");
+                showUpdateDialog("password");
             }
         });
         mProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
 
-    private void showChangeDialog(final String key) {
+    private void showUpdateDialog(final String key) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -130,8 +130,11 @@ public class UserProfileActivity extends AppCompatActivity {
     private void displayData() {
         UserViewModel user = SharedPrefManager.getInstance(this).getUser();
         mTvName.setText(user.getName());
+        mTvName.setTypeface(EasyFonts.caviarDreamsBold(this));
         mTvEmail.setText(user.getEmail());
+        mTvEmail.setTypeface(EasyFonts.caviarDreamsBold(this));
         mTvPhone.setText(user.getPhoneNo());
+        mTvPhone.setTypeface(EasyFonts.caviarDreamsBold(this));
 
         String userPictureUrl = user.getCoverPhoto();
         Toast.makeText(getApplicationContext(),user.getCoverPhoto(),Toast.LENGTH_SHORT).show();

@@ -103,6 +103,9 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setTypeface(EasyFonts.caviarDreamsBold(this));
         mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
         mCreateAccountTextView.setTypeface(EasyFonts.caviarDreamsBold(this));
+
+        TextView textView = (TextView) findViewById(R.id.tv_signIn);
+        textView.setTypeface(EasyFonts.caviarDreamsBold(this));
     }
 
     private void userLogin(String email, String password) {
