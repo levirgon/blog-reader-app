@@ -7,16 +7,16 @@
     tools:context="com.example.noushad.blogbee.activity.SplashScreenActivity">
 
     <TextView
-    android:id="@+id/titleTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="120sp"
-    android:textSize="45sp"
-    android:textStyle="bold"
-    android:textColor="@color/colorAccent"
-    android:text="@string/app_name" />
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120sp"
+        android:textSize="45sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorAccent"
+        android:text="@string/app_name" />
 
     <ImageView
         android:id="@+id/iconImageView"

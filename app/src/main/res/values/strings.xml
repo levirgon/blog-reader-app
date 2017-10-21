@@ -20,7 +20,7 @@
     <string name="login">Login</string>
     <string name="description">Description</string>
     <string name="post">Post</string>
-    <string name="_5_minutes_ago">5 minutes Ago</string>
+    <string name="_5_minutes_ago">5 min ago</string>
     <string name="last_updated_full">Last Updated</string>
     <string name="blog_cover_image">blog cover image</string>
     <string name="password_hint">PASSWORD</string>

@@ -18,8 +18,16 @@ import com.example.noushad.blogbee.model.allPostsResponseModel.DataItem;
 import com.example.noushad.blogbee.utils.PaginationAdapterCallback;
 import com.example.noushad.blogbee.utils.WebOperations;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by noushad on 7/16/17.
@@ -77,7 +85,11 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
         switch (getItemViewType(position)) {
             case ITEM:
                 BlogVH blogVH = (BlogVH) holder;
-                blogVH.bind(dataItem);
+                try {
+                    blogVH.bind(dataItem);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case LOADING:
                 LoadingVH loadingVH = (LoadingVH) holder;
@@ -121,19 +133,26 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
 
         public BlogVH(View itemView) {
             super(itemView);
-            mCommentCountTextView = (TextView) itemView.findViewById(R.id.total_comments);
-            mCoverImage = (ImageView) itemView.findViewById(R.id.cover_image);
-            mProfileImage = (ImageView) itemView.findViewById(R.id.blog_profile_image);
-            mNameTextView = (TextView) itemView.findViewById(R.id.name_text);
-            mLastUpdatedTextView = (TextView) itemView.findViewById(R.id.last_update);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.blog_title);
+            mCommentCountTextView = (TextView) itemView.findViewById(R.id.commentCountTextView);
+            mCoverImage = (ImageView) itemView.findViewById(R.id.blogCoverImageView);
+            mProfileImage = (ImageView) itemView.findViewById(R.id.user_image);
+            mNameTextView = (TextView) itemView.findViewById(R.id.blogerNameTextView);
+            mLastUpdatedTextView = (TextView) itemView.findViewById(R.id.timeCountTextView);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.blogTopicTextView);
 
             itemView.setOnClickListener(this);
         }
 
-        private void bind(DataItem dataItem) {
+        private void bind(DataItem dataItem) throws ParseException {
             mDataItem = dataItem;
-            mLastUpdatedTextView.setText(mDataItem.getLastChange());
+            String str_date=mDataItem.getLastChange().toString();
+            DateFormat formatter ;
+            Date date ;
+            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            date = (Date) formatter.parse(str_date);
+            long longDate=date.getTime();
+
+            mLastUpdatedTextView.setText(getlongtoago(longDate));
             WebOperations.loadImage(parentContext, mCoverImage, mDataItem.getCoverPhoto());
             if (mDataItem.hasCreatorInfo()) {
                 if (WebOperations.hasValidPath(mDataItem.getUserInfo().getCoverPhoto()))
@@ -141,8 +160,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
                 mNameTextView.setText((mDataItem.getUserInfo()).getName());
             }
             mTitleTextView.setText(mDataItem.getTitle());
-            mCommentCountTextView.setText(String.valueOf("Total Comments : "
-                    + mDataItem.getCommentCount()));
+            mCommentCountTextView.setText(String.valueOf(mDataItem.getCommentCount()));
         }
 
         @Override
@@ -237,5 +255,69 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             mItems.remove(position);
             notifyItemRemoved(position);
         }
+    }
+    public static String getlongtoago(long createdAt) {
+        //DateFormat userDateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+        DateFormat dateFormatNeeded = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+        Date date = null;
+        date = new Date(createdAt);
+        String crdate1 = dateFormatNeeded.format(date);
+
+        // Date Calculation
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        crdate1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+
+        // get current date time with Calendar()
+        Calendar cal = Calendar.getInstance();
+        String currenttime = dateFormat.format(cal.getTime());
+
+        Date CreatedAt = null;
+        Date current = null;
+        try {
+            CreatedAt = dateFormat.parse(crdate1);
+            current = dateFormat.parse(currenttime);
+        } catch (java.text.ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Get msec from each, and subtract.
+        long diff = current.getTime() - CreatedAt.getTime();
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        String time = null;
+        if (diffDays > 0) {
+            if (diffDays == 1) {
+                time = diffDays + " day ago ";
+            } else {
+                time = diffDays + " days ago ";
+            }
+        } else {
+            if (diffHours > 0) {
+                if (diffHours == 1) {
+                    time = diffHours + " hr ago";
+                } else {
+                    time = diffHours + " hrs ago";
+                }
+            } else {
+                if (diffMinutes > 0) {
+                    if (diffMinutes == 1) {
+                        time = diffMinutes + " min ago";
+                    } else {
+                        time = diffMinutes + " mins ago";
+                    }
+                } else {
+                    if (diffSeconds > 0) {
+                        time = diffSeconds + " secs ago";
+                    }
+                }
+
+            }
+
+        }
+        return time;
     }
 }
