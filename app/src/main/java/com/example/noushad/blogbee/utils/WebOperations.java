@@ -46,7 +46,7 @@ public class WebOperations {
 
     public static void loadImage(final Context context, final ImageView imageView, final String url) {
 
-        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().crossFade().listener(new RequestListener<String, GlideDrawable>() {
+        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().crossFade().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                 Log.d(TAG, "onException: " + url);
