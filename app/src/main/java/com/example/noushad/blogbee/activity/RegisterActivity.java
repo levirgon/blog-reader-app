@@ -26,8 +26,6 @@ import org.json.JSONObject;
 import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -150,12 +148,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         mProgressDialog.setMessage("Signing Up...");
         mProgressDialog.show();
-        RequestBody requestFile = null;
 
-        if (file != null) {
-            requestFile = RequestBody.create(MediaType.parse("image"), file);
-
-        }
+//        MultipartBody.Part body = null;
+//
+        //apparently the api has problems uploading file here.
+//
+//        if (file != null) {
+//            RequestBody requestFile = RequestBody.create(MediaType.parse("image"), file);
+//            body = MultipartBody.Part.createFormData("image_thumb", file.getName(), requestFile);
+//
+//        }
         Call<RegResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
 
         registerResponseCall.enqueue(new Callback<RegResponse>() {
