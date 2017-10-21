@@ -27,7 +27,6 @@ import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,11 +150,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         mProgressDialog.setMessage("Signing Up...");
         mProgressDialog.show();
-        MultipartBody.Part body = null;
+        RequestBody requestFile = null;
 
         if (file != null) {
-            RequestBody requestFile = RequestBody.create(MediaType.parse("image"), file);
-             body = MultipartBody.Part.createFormData("image_thumb", file.getName(), requestFile);
+            requestFile = RequestBody.create(MediaType.parse("image"), file);
+
         }
         Call<RegResponse> registerResponseCall = mService.createUser(name, email, password, phone, confirmPassword);
 

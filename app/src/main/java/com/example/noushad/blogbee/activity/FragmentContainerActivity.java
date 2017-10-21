@@ -183,8 +183,11 @@ public class FragmentContainerActivity extends AppCompatActivity implements Navi
                 startFragment(new MyOwnPostFragment(), REPLACE);
                 break;
             case R.id.favourites:
+                break;
             case R.id.bookmarks:
+                break;
             case R.id.settings:
+                break;
             case R.id.action_logout:
                 Toast.makeText(getApplicationContext(), "Logging Out...", Toast.LENGTH_SHORT).show();
                 logout();

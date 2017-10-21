@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.utils.SharedPrefManager;
+import com.vstechlab.easyfonts.EasyFonts;
 
 public class SplashScreenActivity extends Activity {
 
@@ -30,6 +31,7 @@ public class SplashScreenActivity extends Activity {
 
             TextView tv_title = (TextView) findViewById(R.id.titleTextView);
             tv_title.setAnimation(tv_anim);
+            tv_title.setTypeface(EasyFonts.caviarDreamsBold(this));
             ImageView iv_icon = (ImageView) findViewById(R.id.iconImageView);
             iv_icon.setAnimation(icon_anim);
 
