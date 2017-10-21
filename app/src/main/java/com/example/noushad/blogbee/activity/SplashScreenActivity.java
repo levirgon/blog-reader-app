@@ -1,5 +1,6 @@
 package com.example.noushad.blogbee.activity;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,10 @@ public class SplashScreenActivity extends Activity {
         ImageView iv_icon = (ImageView) findViewById(R.id.iconImageView);
         iv_icon.setAnimation(icon_anim);
 
+        TextView tv_bee = (TextView) findViewById(R.id.bee_textView);
+        tv_bee.setTypeface(EasyFonts.caviarDreamsBold(this));
+        filpIt(tv_bee);
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -52,4 +57,11 @@ public class SplashScreenActivity extends Activity {
 //        }
 
     }
+
+    private void filpIt(TextView view) {
+        ObjectAnimator flip = ObjectAnimator.ofFloat(view, "rotationY", 0f, 360f);
+        flip.setDuration(4000);
+        flip.start();
+    }
+
 }
