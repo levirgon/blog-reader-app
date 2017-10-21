@@ -20,31 +20,36 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        if(SharedPrefManager.getInstance(this).isLoggedIn()){
-            startActivity(new Intent(this,FragmentContainerActivity.class));
-            finish();
-        }
+//        if(SharedPrefManager.getInstance(this).isLoggedIn()){
+//            startActivity(new Intent(this,FragmentContainerActivity.class));
+//            finish();
+//        }
 
-        else {
-            Animation tv_anim = AnimationUtils.loadAnimation(this, R.anim.tv_anim);
-            Animation icon_anim = AnimationUtils.loadAnimation(this, R.anim.iv_anim);
+//        else {
+        Animation tv_anim = AnimationUtils.loadAnimation(this, R.anim.tv_anim);
+        Animation icon_anim = AnimationUtils.loadAnimation(this, R.anim.iv_anim);
 
-            TextView tv_title = (TextView) findViewById(R.id.titleTextView);
-            tv_title.setAnimation(tv_anim);
-            tv_title.setTypeface(EasyFonts.caviarDreamsBold(this));
-            ImageView iv_icon = (ImageView) findViewById(R.id.iconImageView);
-            iv_icon.setAnimation(icon_anim);
+        TextView tv_title = (TextView) findViewById(R.id.titleTextView);
+        tv_title.setAnimation(tv_anim);
+        tv_title.setTypeface(EasyFonts.caviarDreamsBold(this));
+        ImageView iv_icon = (ImageView) findViewById(R.id.iconImageView);
+        iv_icon.setAnimation(icon_anim);
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (SharedPrefManager.getInstance(SplashScreenActivity.this).isLoggedIn()) {
+                    startActivity(new Intent(SplashScreenActivity.this, FragmentContainerActivity.class));
+                    finish();
+                } else {
                     startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
                     finish();
                 }
-            }, 4000);
+            }
+        }, 4000);
 
-        }
+//        }
 
     }
 }

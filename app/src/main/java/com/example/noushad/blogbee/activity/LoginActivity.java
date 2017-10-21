@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void userLogin(String email, String password) {
 
-        progressDialog.setMessage("Signing Up...");
+        progressDialog.setMessage("Logging In...");
         progressDialog.show();
         String token = SharedPrefManager.getInstance(this).getDeviceToken();
         Call<LogInSuccessResponse> responseCall = mService.userLogin(email, password,token);
