@@ -36,10 +36,10 @@ public class SplashScreenActivity extends Activity {
         ImageView iv_icon = (ImageView) findViewById(R.id.iconImageView);
         iv_icon.setAnimation(icon_anim);
 
-        TextView tv_bee = (TextView) findViewById(R.id.bee_textView);
+        /*TextView tv_bee = (TextView) findViewById(R.id.bee_textView);
         tv_bee.setTypeface(EasyFonts.caviarDreamsBold(this));
         filpIt(tv_bee);
-
+*/
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
