@@ -4,8 +4,8 @@
                                    android:id="@+id/custom_toolbar"
                                    android:layout_width="match_parent"
                                    android:layout_height="wrap_content"
-                                   android:background="@color/colorPrimaryDark"
-                                   android:minHeight="72dp"
+                                   android:background="@color/colorPrimary"
+                                   android:minHeight="60dp"
                                    android:orientation="vertical"
                                    app:theme="@style/ThemeOverlay.AppCompat.Light">
 

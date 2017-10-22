@@ -18,6 +18,7 @@
     <string name="home">Home</string>
     <string name="create_new_account">Create New Account</string>
     <string name="login">Login</string>
+    <string name="recover_pass">Send</string>
     <string name="description">Description</string>
     <string name="post">Post</string>
     <string name="_5_minutes_ago">5 min ago</string>

@@ -19,11 +19,14 @@
             android:name=".activity.LoginActivity"
             android:hardwareAccelerated="true" />
         <activity android:name=".activity.FragmentContainerActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
             <!-- <meta-data -->
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
             <!-- android:value=".activity.LoginActivity"/> -->
@@ -55,14 +58,16 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activity.SplashScreenActivity"
-                android:theme="@style/SplashScreenTheme">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".activity.SplashScreenActivity"
+            android:theme="@style/SplashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".activity.ForgetPasswordActivity"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordEditText;
     private Button mLoginButton;
     private TextView mCreateAccountTextView;
+    private TextView mForgetPasswordTextView;
     private String mEmail;
     private String mPassword;
     private TextInputLayout emailInputLayout;
@@ -51,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         initializeViews();
+
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,11 +82,50 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        mPasswordEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
+                {
+                    mEmail = mEmailEditText.getText().toString();
+                    mPassword = mPasswordEditText.getText().toString();
+
+                    //check for valid email and password
+                    if (mEmail.isEmpty() || mPassword.isEmpty()) {
+                        if (mEmail.isEmpty()) {
+                            emailInputLayout.setErrorEnabled(true);
+                            emailInputLayout.setError("Email cannot be empty");
+                        } else {
+                            emailInputLayout.setErrorEnabled(false);
+                        }
+                        if (mPassword.isEmpty()) {
+                            passwordInputLayout.setErrorEnabled(true);
+                            passwordInputLayout.setError("Password cannot be empty");
+                        } else {
+                            passwordInputLayout.setErrorEnabled(false);
+                        }
+                    } else {
+                        passwordInputLayout.setErrorEnabled(false);
+                        emailInputLayout.setErrorEnabled(false);
+                        userLogin(mEmail, mPassword);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         mCreateAccountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+        mForgetPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -103,6 +145,8 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setTypeface(EasyFonts.caviarDreamsBold(this));
         mCreateAccountTextView = (TextView) findViewById(R.id.create_account);
         mCreateAccountTextView.setTypeface(EasyFonts.caviarDreamsBold(this));
+        mForgetPasswordTextView = (TextView) findViewById(R.id.tv_forgetPass);
+        mForgetPasswordTextView.setTypeface(EasyFonts.caviarDreamsBold(this));
 
         TextView textView = (TextView) findViewById(R.id.tv_signIn);
         textView.setTypeface(EasyFonts.caviarDreamsBold(this));
