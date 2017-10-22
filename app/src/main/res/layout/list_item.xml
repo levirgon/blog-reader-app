@@ -10,13 +10,11 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@android:color/transparent"
         android:id="@+id/cardView3"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_margin="8dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
     <RelativeLayout
-        android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="390sp"
         android:layout_alignParentTop="true"
@@ -45,7 +43,6 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/loader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/user_image"
@@ -62,30 +59,30 @@
                 android:scaleType="fitXY"/>
 
             <TextView
-                android:id="@+id/likeCountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/likedImageView"
                 android:layout_marginLeft="5sp"
+                android:fontFamily="sans-serif"
                 android:layout_toEndOf="@+id/likedImageView"
                 android:text="90" />
 
             <ImageView
-                android:id="@+id/commentImageView"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_marginLeft="30sp"
                 app:srcCompat="@drawable/comment"
                 android:scaleType="fitXY"/>
+
             <TextView
                 android:id="@+id/commentCountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:layout_marginLeft="5sp"
                 android:text="56" />
 
             <ImageView
-                android:id="@+id/timeImageView"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_marginLeft="30sp"
@@ -96,6 +93,7 @@
                 android:id="@+id/timeCountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:layout_marginLeft="5sp"
                 android:text="@string/_5_minutes_ago" />
 
@@ -131,7 +129,6 @@
             android:layout_below="@+id/blogCoverImageView">
 
             <TextView
-                android:id="@+id/likeTextViewButton"
                 android:layout_width="125sp"
                 android:layout_height="match_parent"
                 android:text="Like"
@@ -144,7 +141,6 @@
                 android:background="#cdcdcd" />
 
             <TextView
-                android:id="@+id/textView10"
                 android:layout_width="125sp"
                 android:layout_height="match_parent"
                 android:text="Comment"
@@ -156,7 +152,6 @@
                 android:background="#cdcdcd" />
 
             <TextView
-                android:id="@+id/textView11"
                 android:layout_width="122sp"
                 android:layout_height="match_parent"
                 android:text="Share"

@@ -55,7 +55,6 @@ public class WebOperations {
 
             @Override
             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-
                 return false;
             }
         }).into(imageView);
