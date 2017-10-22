@@ -16,7 +16,6 @@
         android:layout_centerHorizontal="true">
 
     <RelativeLayout
-        android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="390sp"
         android:layout_alignParentTop="true"
@@ -45,7 +44,6 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/loader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/user_image"
@@ -62,7 +60,6 @@
                 android:scaleType="fitXY"/>
 
             <TextView
-                android:id="@+id/likeCountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -72,7 +69,6 @@
                 android:text="90" />
 
             <ImageView
-                android:id="@+id/commentImageView"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_marginLeft="30sp"
@@ -80,7 +76,6 @@
                 android:scaleType="fitXY"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/blog_profile_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
@@ -100,7 +95,6 @@
                 android:text="56" />
 
             <ImageView
-                android:id="@+id/timeImageView"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_marginLeft="30sp"
@@ -146,7 +140,6 @@
             android:layout_below="@+id/blogCoverImageView">
 
             <TextView
-                android:id="@+id/likeTextViewButton"
                 android:layout_width="125sp"
                 android:layout_height="match_parent"
                 android:text="Like"
@@ -159,7 +152,6 @@
                 android:background="#cdcdcd" />
 
             <TextView
-                android:id="@+id/textView10"
                 android:layout_width="125sp"
                 android:layout_height="match_parent"
                 android:text="Comment"
@@ -171,7 +163,6 @@
                 android:background="#cdcdcd" />
 
             <TextView
-                android:id="@+id/textView11"
                 android:layout_width="122sp"
                 android:layout_height="match_parent"
                 android:text="Share"
