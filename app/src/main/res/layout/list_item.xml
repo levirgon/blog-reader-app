@@ -130,10 +130,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="125sp"
+                    android:layout_width="120sp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="3sp"
                     android:gravity="center"
+                    android:layout_gravity="left"
                     android:text="Like"
                     android:textSize="16sp" />
 
@@ -143,8 +144,9 @@
                     android:background="#cdcdcd" />
 
                 <TextView
-                    android:layout_width="125sp"
+                    android:layout_width="120sp"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:gravity="center"
                     android:text="Comment"
                     android:textSize="16sp" />
@@ -155,9 +157,10 @@
                     android:background="#cdcdcd" />
 
                 <TextView
-                    android:layout_width="122sp"
+                    android:layout_width="120sp"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:layout_gravity="right"
                     android:text="Share"
                     android:textSize="16sp" />
             </LinearLayout>
