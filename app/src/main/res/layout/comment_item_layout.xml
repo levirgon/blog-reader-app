@@ -14,8 +14,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res"
             android:id="@+id/comment_profile_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_margin="8dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/profile_image"/>
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="4dp">
 
 
             <TextView
@@ -32,8 +32,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="30"
-                android:padding="8dp"
-                android:textSize="18sp"
+                android:layout_marginTop="5sp"
+                android:padding="4dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Noushad"/>
 
@@ -44,7 +45,7 @@
                 android:maxLength="100"
                 android:maxLines="10"
                 android:minLines="1"
-                android:padding="8dp"
+                android:padding="4dp"
                 tools:text="my comment is here .............. Hello world....................... love u all"/>
         </LinearLayout>
 
