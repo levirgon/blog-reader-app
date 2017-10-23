@@ -1,9 +1,14 @@
 package com.example.noushad.blogbee.adapter;
 
 import android.content.Context;
+import android.media.Image;
+import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -11,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.noushad.blogbee.R;
 import com.example.noushad.blogbee.fragment.ListFragment;
@@ -129,6 +135,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
         private TextView mCommentCountTextView;
         private TextView mNameTextView;
         private TextView mTitleTextView;
+        private ImageView mImageSettingButton;
 
 
         public BlogVH(View itemView) {
@@ -139,6 +146,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             mNameTextView = (TextView) itemView.findViewById(R.id.blogerNameTextView);
             mLastUpdatedTextView = (TextView) itemView.findViewById(R.id.timeCountTextView);
             mTitleTextView = (TextView) itemView.findViewById(R.id.blogTopicTextView);
+            mImageSettingButton = (ImageView) itemView.findViewById(R.id.popupImageView);
 
             itemView.setOnClickListener(this);
         }
@@ -161,6 +169,12 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             }
             mTitleTextView.setText(mDataItem.getTitle());
             mCommentCountTextView.setText(String.valueOf(mDataItem.getCommentCount()));
+            mImageSettingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(mImageSettingButton,getPosition());
+                }
+            });
         }
 
         @Override
@@ -168,6 +182,14 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
             int pos = getAdapterPosition();
             int id = mItems.get(pos).getId();
             mListener.onListBlogSelected(id);
+        }
+        private void showPopupMenu(View view,int position) {
+            // inflate menu
+            PopupMenu popup = new PopupMenu(view.getContext(),view );
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.popup_menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
+            popup.show();
         }
     }
 
@@ -319,5 +341,34 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter {
 
         }
         return time;
+    }
+
+    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+
+        public int position;
+        public MyMenuItemClickListener(int positon) {
+            this.position=positon;
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+
+                case R.id.popup_bookmark:
+                    Toast.makeText(parentContext, "Bookmark will work from here soon", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.popup_edit:
+                    Toast.makeText(parentContext, "Edit will work from here soon", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.popup_delete:
+                    Toast.makeText(parentContext, "Delete will work from here soon", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.popup_like:
+                    Toast.makeText(parentContext, "Like will work from here soon", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+            }
+            return false;
+        }
     }
 }
